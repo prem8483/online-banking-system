@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Your Nominee</title>
+
+    <style>
+        :root {
+            --primary: #0050ff;
+            --bg: #f3f5fa;
+            --card: #fff;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            font-family: Arial;
+        }
+
+        .topbar {
+            background: var(--primary);
+            color: #fff;
+            padding: 14px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .topbar a {
+            color: white;
+            margin-left: 12px;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 35px auto;
+            padding: 0 16px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
+        }
+
+        h2 {
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        label {
+            display: block;
+            margin-top: 12px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-top: 6px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        button {
+            background: var(--primary);
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            margin-top: 14px;
+            width: 100%;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            font-size: 14px;
+        }
+
+        .noData {
+            text-align: center;
+            padding: 15px;
+            font-size: 16px;
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <div class="topbar">
+        <div style="font-size:18px;font-weight:bold;">Online Bank</div>
+        <div>
+            <a href="user-dashboard.html">Dashboard</a>
+            <a href="user-account.html">Accounts</a>
+            <a href="user-nominee.html">Nominee</a>
+            <a href="user-transactions.html">Transactions</a>
+            <a href="user-transactions-send.html">Money Transfer</a>
+            <a href="user-profile.html">Profile</a>
+            <a href="#" onclick="logout()">Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div class="card" id="nomineeForm">
+            <h2>Add Nominee</h2>
+
+            <label>Nominee Name</label>
+            <input type="text" id="nomineeName">
+
+            <label>Account Number</label>
+            <input type="number" id="nomineeAccount">
+
+            <label>Bank Name</label>
+            <input type="text" id="nomineeBank">
+
+            <label>IFSC Code</label>
+            <input type="text" id="ifscCode">
+
+            <label>Relation</label>
+            <input type="text" id="relation">
+
+            <button onclick="saveNominee()" id="addNomineeBtn">Add Nominee</button>
+        </div>
+
+        <div class="card">
+            <h2>Your Nominee</h2>
+            <div id="noBens" class="noData" style="display:none;">
+                No nominee added yet.
+            </div>
+
+            <table id="benTable">
+                <tr>
+                    <th>Name</th>
+                    <th>Account No</th>
+                    <th>Bank</th>
+                    <th>IFSC</th>
+                    <th>Relation</th>
+                    <th>Action</th>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+
+    <script>
+        let userId = localStorage.getItem("userId");
+        if (!userId) location.href = "user-login.html";
+
+        let nomineeExist = false;
+
+        // LOAD NOMINEE
+        async function loadNominee() {
+            const res = await fetch(`http://localhost:8080/api/nominee/user/${userId}`);
+            const list = await res.json();
+
+            nomineeExist = list.length > 0;    // update state
+            updateUI();                        // update UI based on nominee
+
+            if (list.length === 0) {
+                document.getElementById("noBens").style.display = "block";
+                return;
+            }
+
+            const table = document.getElementById("benTable");
+
+            list.forEach(b => {
+                let row = document.createElement("tr");
+                row.innerHTML = `
+                <td>${b.nomineeName}</td>
+                <td>${b.nomineeAccountNo}</td>
+                <td>${b.bankName}</td>
+                <td>${b.ifscCode}</td>
+                <td>${b.relation}</td>
+                <td>
+                    <button id="deleteNomineeBtn" style="padding:6px;" onclick="deleteNominee(${b.nomineeId})">
+                        Delete
+                    </button>
+                </td>
+            `;
+                table.appendChild(row);
+            });
+
+            updateUI();  // re-run after button exists
+        }
+
+        loadNominee();
+
+
+        // SAVE NOMINEE
+        async function saveNominee() {
+            let name = document.getElementById("nomineeName").value;
+            let acc = document.getElementById("nomineeAccount").value;
+            let bank = document.getElementById("nomineeBank").value;
+            let ifscCode = document.getElementById("ifscCode").value;
+            let relation = document.getElementById("relation").value;
+
+            if (!name || !acc) {
+                alert("Name and Account Number are required");
+                return;
+            }
+
+            const res = await fetch("http://localhost:8080/api/nominee", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    userId: userId,
+                    nomineeName: name,
+                    nomineeAccountNo: acc,
+                    bankName: bank,
+                    ifscCode: ifscCode,
+                    relation: relation
+                })
+            });
+
+            if (res.ok) {
+                alert("Nominee added!");
+                location.reload();
+            }
+        }
+
+
+        // DELETE NOMINEE
+        async function deleteNominee(nomineeId) {
+            if (!confirm("Delete this nominee?")) return;
+
+            const res = await fetch(`http://localhost:8080/api/nominee/delete/${nomineeId}`, {
+                method: "DELETE"
+            });
+
+            if (res.ok) {
+                alert("Deleted!");
+                location.reload();
+            }
+        }
+
+        function updateUI() {
+            const addBtn = document.getElementById("addNomineeBtn");
+            const form = document.getElementById("nomineeForm");
+            const delBtn = document.getElementById("deleteNomineeBtn"); // may or may not exist yet
+
+            if (nomineeExist) {
+                addBtn.style.display = "none";
+                form.style.display = "none";
+                if (delBtn) delBtn.style.display = "block";
+            } else {
+                addBtn.style.display = "block";
+                form.style.display = "block";
+                if (delBtn) delBtn.style.display = "none";
+            }
+        }
+
+
+        function logout() {
+            localStorage.removeItem("userId");
+            location.href = "user-login.html";
+        }
+    </script>
+
+
+</body>
+
+</html>

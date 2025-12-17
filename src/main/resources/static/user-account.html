@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>My Account</title>
+
+    <style>
+        :root {
+            --primary: #0050ff;
+            --bg: #f3f5fa;
+            --card: #fff;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            font-family: Arial;
+        }
+
+        .topbar {
+            background: var(--primary);
+            padding: 14px 20px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .topbar a {
+            color: white;
+            margin-left: 12px;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 35px auto;
+            padding: 0 16px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
+            margin-bottom: 25px;
+        }
+
+        .noacc {
+            text-align: center;
+            color: red;
+            font-size: 18px;
+            padding: 15px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="topbar">
+        <div style="font-size:18px;font-weight:bold;">Online Bank</div>
+        <div>
+            <a href="user-dashboard.html">Dashboard</a>
+            <a href="user-account.html">Accounts</a>
+            <a href="user-nominee.html">Nominee</a>
+            <a href="user-transactions.html">Transactions</a>
+            <a href="user-transactions-send.html">Money Transfer</a>
+            <a href="user-profile.html">Profile</a>
+            <a href="#" onclick="logout()">Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div id="noAccount" class="card noacc" style="display:none;">
+            You currently have no bank accounts.<br>
+            Please contact bank staff to create an account.
+        </div>
+
+        <div class="card" id="accCard" style="display:none;">
+            <h3>Account Details</h3>
+            <p><b>Account Number:</b> <span id="accNo"></span></p>
+            <p><b>Account Type:</b> <span id="accType"></span></p>
+            <p><b>Status:</b> <span id="accStatus"></span></p>
+            <p><b>Balance:</b> ₹ <span id="accBalance"></span></p>
+        </div>
+
+    </div>
+
+    <script>
+        let userId = localStorage.getItem("userId");
+        if (!userId) location.href = "user-login.html";
+
+        async function loadAccount() {
+            const res = await fetch(`http://localhost:8080/api/accounts/user/${userId}`);
+            const list = await res.json();
+
+            if (list.length === 0) {
+                document.getElementById("noAccount").style.display = "block";
+                return;
+            }
+
+            const a = list[0];
+            document.getElementById("accCard").style.display = "block";
+            document.getElementById("accNo").innerText = a.accountNo;
+            document.getElementById("accType").innerText = a.accountType;
+            document.getElementById("accStatus").innerText = a.status ? "Active" : "Inactive";
+            document.getElementById("accBalance").innerText = a.balance;
+        }
+
+        loadAccount();
+
+        function logout() {
+            localStorage.removeItem("userId");
+            location.href = "user-login.html";
+        }
+    </script>
+
+</body>
+
+</html>

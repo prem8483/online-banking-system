@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Admin Login</title>
+
+    <style>
+        :root {
+            --primary: #4b5bff;
+            --bg: #eef1ff;
+            --card: #ffffff;
+            --text: #1f1f1f;
+            --muted: #6b6d7a;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial;
+            background: var(--bg);
+        }
+
+        header {
+            text-align: center;
+            padding: 25px 0;
+            background: var(--primary);
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .form-box {
+            width: 380px;
+            background: var(--card);
+            margin: 60px auto;
+            padding: 35px 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        label {
+            display: block;
+            margin-top: 18px;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        .btn {
+            width: 100%;
+            margin-top: 25px;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        #msg {
+            margin-top: 15px;
+            text-align: center;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>Admin Login</header>
+
+    <div class="form-box">
+
+        <label>Username</label>
+        <input id="username" placeholder="Enter admin username">
+
+        <label>Password</label>
+        <input id="password" type="password" placeholder="Enter password">
+
+        <button class="btn" onclick="login()">Login</button>
+
+        <p id="msg"></p>
+    </div>
+
+    <script>
+
+        async function login() {
+
+            
+            let req = {
+                username: document.getElementById("username").value,
+                password: document.getElementById("password").value
+            }
+            
+            let res = await fetch("http://localhost:8080/api/admin/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(req)
+            });
+            
+            let data = await res.json();
+            let adminId = data.adminId ?? data.admin_id
+            localStorage.setItem("adminId", adminId)
+
+            if (res.ok) {
+                location.href = "admin-dashboard.html";
+            } else {
+                document.getElementById("msg").innerHTML = "Login Failed!";
+                document.getElementById("msg").style.color = "red";
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>

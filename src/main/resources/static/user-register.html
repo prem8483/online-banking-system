@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Registration</title>
+    <meta charset="UTF-8">
+    <style>
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial;
+            background: #f2f5fb;
+        }
+
+        .center-box {
+            width: 420px;
+            background: white;
+            padding: 30px;
+            margin: 40px auto;
+            border-radius: 12px;
+            box-shadow: 0 0 18px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #0b63ff;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            margin-top: 15px;
+            color: #444;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-top: 6px;
+            border: 1px solid #bbb;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 22px;
+            background: #0b63ff;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0849c4;
+        }
+
+        .bottom-text {
+            text-align: center;
+            margin-top: 18px;
+            font-size: 14px;
+        }
+
+        a {
+            color: #0b63ff;
+            text-decoration: none;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="center-box">
+        <h2>User Registration</h2>
+
+        <label>Full Name</label>
+        <input type="text" id="name">
+
+        <label>Email</label>
+        <input type="text" id="email">
+
+        <label>Phone</label>
+        <input type="text" id="phone">
+
+        <label>Password</label>
+        <input type="password" id="password">
+
+        <label>Address</label>
+        <input type="text" id="address">
+
+        <button onclick="register()">Register</button>
+
+        <div class="bottom-text">
+            Already have an account? <a href="user-login.html">Login here</a>
+        </div>
+    </div>
+
+<script>
+    async function register() {
+        let user = {
+            name: document.getElementById("name").value,
+            email: document.getElementById("email").value,
+            phone: document.getElementById("phone").value,
+            password: document.getElementById("password").value,
+            address: document.getElementById("address").value
+        };
+
+        const res = await fetch("http://localhost:8080/api/forms/apply", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(user)
+        });
+
+        if (res.status === 200) {
+            let data = await res.json();
+
+            alert("Registration Successful!");
+            alert("We will inform you ones your account is created")
+            location.href = "index.html";
+        } else {
+            alert("Registration Failed!");
+        }
+    }
+</script>
+
+</body>
+</html>

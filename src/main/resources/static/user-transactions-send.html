@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Send Money</title>
+
+    <style>
+        :root {
+            --primary: #0050ff;
+            --bg: #f3f5fa;
+            --card: #fff;
+        }
+
+        body {
+            font-family: Arial;
+            background: #f3f5fa;
+            margin: 0;
+        }
+
+        .card {
+            width: 400px;
+            margin: 60px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        button {
+            margin-top: 18px;
+            padding: 12px;
+            width: 100%;
+            background: #0050ff;
+            color: white;
+            border: none;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .topbar {
+            background: var(--primary);
+            color: #fff;
+            padding: 14px 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .topbar a {
+            color: white;
+            margin-left: 12px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="topbar">
+        <div style="font-size:18px;font-weight:bold;">Online Bank</div>
+        <div>
+            <a href="user-dashboard.html">Dashboard</a>
+            <a href="user-account.html">Accounts</a>
+            <a href="user-nominee.html">Nominee</a>
+            <a href="user-transactions.html">Transactions</a>
+            <a href="user-transactions-send.html">Money Transfer</a>
+            <a href="user-profile.html">Profile</a>
+            <a href="#" onclick="logout()">Logout</a>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Send Money</h2>
+
+        <label>Receiver Account Number</label>
+        <input type="text" id="accountNo">
+
+        <label>Amount</label>
+        <input type="number" id="amount" />
+
+        <label>Pass Code</label>
+        <input type="password" id="code">
+
+        <label>Reason (optional)</label>
+        <input type="text" id="reason">
+
+
+        <button onclick="sendMoney()">Send</button>
+    </div>
+
+    <script>
+
+        let userId = localStorage.getItem("userId");
+        if (!userId) location.href = "user-login.html";
+        
+
+        // Send Money
+        async function sendMoney() {
+
+            let amount = document.getElementById("amount").value
+
+
+            if (amount <= 0) {
+                alert("Enter valid amount");
+                return;
+            }
+
+            const res = await fetch(`http://localhost:8080/api/transfer`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    senderAccountNo: userId,
+                    receiverAccountNo: document.getElementById("accountNo").value,
+                    amount: amount,
+                    specialCode: document.getElementById("code").value,
+                    reason: document.getElementById("reason").value
+                })
+            });
+
+            if (res.ok) {
+                alert("Money sent successfully!");
+                document.getElementById("amount").value = "";
+            } else {
+                alert("Transfer failed!");
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>

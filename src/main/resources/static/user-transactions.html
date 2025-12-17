@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Transaction History</title>
+
+    <style>
+        :root {
+            --primary: #0050ff;
+            --bg: #f3f5fa;
+            --card: #fff;
+            --credit: #0a8f3c;
+            --debit: #d93025;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            font-family: Arial;
+        }
+
+        .topbar {
+            background: var(--primary);
+            color: white;
+            padding: 14px 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .topbar a {
+            color: white;
+            margin-left: 12px;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 16px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        th {
+            background: #f5f6fa;
+        }
+
+        .credit {
+            color: var(--credit);
+            font-weight: bold;
+        }
+
+        .debit {
+            color: var(--debit);
+            font-weight: bold;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 20px;
+            color: #777;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="topbar">
+        <div><b>Online Bank</b></div>
+        <div>
+            <a href="user-dashboard.html">Dashboard</a>
+            <a href="user-account.html">Accounts</a>
+            <a href="user-nominee.html">Nominee</a>
+            <a href="user-transactions.html">Transactions</a>
+            <a href="user-transactions-send.html">Money Transfer</a>
+            <a href="user-profile.html">Profile</a>
+            <a href="#" onclick="logout()">Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <h2>Transaction History</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th>Type</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+
+        const userId = localStorage.getItem("userId")
+        if ( !userId ) {
+            location.href = "user-login.html"
+        }
+
+        async function showTransactions() {
+
+            const accountNo = localStorage.getItem("accountNo")
+            const res = await fetch(`http://localhost:8080/api/transactions/account/${accountNo}`, 
+                {
+                    method : "GET"
+                }
+            )
+
+            const data = await res.json();
+
+            let tbody = document.querySelector("tbody")
+            tbody.innerHTML = ""
+            
+            data.forEach(element => {
+                let tr = document.createElement("tr")
+                tr.innerHTML = `
+                    <td>${element.createdAt}</td>
+                    <td>${element.description}</td>
+                    <td>${element.txnType}</td>
+                    <td>${element.amount}</td>
+                `;
+
+                tbody.appendChild(tr);
+            });
+        }
+
+        window.onload = showTransactions;
+
+        async function logout() {
+            localStorage.removeItem("accountNo")
+            localStorage.removeItem("userId")
+            location.href = "user-login.html"
+        }
+    </script>
+
+</body>
+
+</html>

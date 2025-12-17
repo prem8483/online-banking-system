@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>User Login</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial;
+            background: #f2f5fb;
+        }
+
+        .center-box {
+            width: 360px;
+            background: white;
+            padding: 30px;
+            margin: 80px auto;
+            border-radius: 12px;
+            box-shadow: 0 0 18px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #0b63ff;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            margin-top: 15px;
+            color: #444;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-top: 6px;
+            border: 1px solid #bbb;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 22px;
+            background: #0b63ff;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0849c4;
+        }
+
+        .bottom-text {
+            text-align: center;
+            margin-top: 18px;
+            font-size: 14px;
+        }
+
+        a {
+            color: #0b63ff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="center-box">
+        <h2>User Login</h2>
+
+        <label>Email</label>
+        <input type="text" id="email">
+
+        <label>Password</label>
+        <input type="password" id="password">
+
+        <button onclick="login()">Login</button>
+
+        <div class="bottom-text">
+            New user? <a href="user-register.html">Register here</a>
+        </div>
+    </div>
+
+    <script>
+
+        async function login() {
+            let req = {
+                email: document.getElementById("email").value,
+                password: document.getElementById("password").value
+            };
+            
+            const res = await fetch("http://localhost:8080/api/users/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(req)
+            });
+            
+            if (res.status === 200) {
+                let data = await res.json();
+                
+                // FIXED: store correct ID
+                let uid = data.userId ?? data.user_id;
+                let email = data.email;
+                localStorage.setItem("userId", uid);
+                localStorage.setItem("userEmail", email);
+                
+                const res2 = await fetch(`http://localhost:8080/api/accounts/user/${uid}`)
+                let data2 = await res2.json();
+                let accountNo = data2[0].accountNo
+                localStorage.setItem("accountNo", accountNo)
+
+
+                alert("Login Successful");
+                location.href = "user-dashboard.html";
+            } else {
+                alert("Invalid Credentials");
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>

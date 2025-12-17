@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pending Applications</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+
+</head>
+
+<body class="bg-light">
+
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Pending Applications</h2>
+
+        <table class="table table-bordered table-hover bg-white shadow-sm">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+
+        async function loadPending() {
+            const response = await fetch("http://localhost:8080/api/forms/admin/application/pending", {
+                method: "GET"
+            })
+
+            const data = await response.json();
+
+            let tbody = document.querySelector("tbody")
+            tbody.innerHTML = "";
+
+            data.forEach(app => {
+                let tr = document.createElement("tr");
+
+                tr.innerHTML = `
+                    <td>${app.applicationId}</td>
+                    <td>${app.name}</td>
+                    <td>${app.email}</td>
+                    <td>${app.phone}</td>
+                    <td>
+                        <a href = "http://localhost:8080/api/forms/admin/application/approve/${app.applicationId}" class = "btn btn-success btn-sm me-2">Approve</a>
+                        <a href = "http://localhost:8080/api/forms/admin/application/rejectedForms/${app.applicationId}" class = "btn btn-danger btmnsm">Reject</a>
+                    </td>
+                `;
+
+                tbody.appendChild(tr);
+            });
+        }
+
+        window.onload = loadPending;
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Profile</title>
+
+  <style>
+    :root {
+      --primary: #0050ff;
+      --bg: #f3f5fa;
+      --card: #fff;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      font-family: Arial;
+    }
+
+    .topbar {
+      background: var(--primary);
+      color: white;
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .topbar a {
+      color: white;
+      margin-left: 12px;
+      text-decoration: none;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 35px auto;
+      padding: 0 16px;
+    }
+
+    .card {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
+    }
+
+    label {
+      display: block;
+      margin-top: 12px;
+      font-size: 14px;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 12px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 15px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px;
+      width: 100%;
+      background: var(--primary);
+      border: none;
+      border-radius: 6px;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <div class="topbar">
+    <div style="font-size:18px;font-weight:bold;">Online Bank</div>
+    <div>
+      <a href="user-dashboard.html">Dashboard</a>
+      <a href="user-account.html">Accounts</a>
+      <a href="user-nominee.html">Nominee</a>
+      <a href="user-transactions.html">Transactions</a>
+      <a href="user-transactions-send.html">Money Transfer</a>
+      <a href="user-profile.html">Profile</a>
+      <a href="#" onclick="logout()">Logout</a>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <div class="card">
+      <h2>Edit Profile</h2>
+
+      <label>Name</label>
+      <input type="text" id="name">
+
+      <label>Email (cannot change)</label>
+      <input type="email" id="email" disabled>
+
+      <label>Phone</label>
+      <input type="text" id="phone">
+
+      <label>Address</label>
+      <textarea id="address"></textarea>
+
+      <button onclick="updateProfile()">Save Changes</button>
+    </div>
+
+  </div>
+
+  <script>
+    let userId = localStorage.getItem("userId");
+    if (!userId) location.href = "user-login.html";
+
+    // Load user details
+    async function loadUser() {
+      const res = await fetch(`http://localhost:8080/api/users/${userId}`);
+      const u = await res.json();
+
+      document.getElementById("name").value = u.name;
+      document.getElementById("email").value = u.email;
+      document.getElementById("phone").value = u.phone;
+      document.getElementById("address").value = u.address;
+    }
+
+    loadUser();
+
+    // Update profile
+    async function updateProfile() {
+      let name = document.getElementById("name").value;
+      let phone = document.getElementById("phone").value;
+      let address = document.getElementById("address").value;
+
+      const res = await fetch(`http://localhost:8080/api/users/${userId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: userId,
+          name: name,
+          email: document.getElementById("email").value,
+          phone: phone,
+          address: address
+        })
+      });
+
+      if (res.ok) {
+        alert("Profile updated successfully!");
+        location.href = "user-profile.html";
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem("userId");
+      location.href = "user-login.html";
+    }
+  </script>
+
+</body>
+
+</html>

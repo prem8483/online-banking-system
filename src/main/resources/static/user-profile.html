@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>User Profile</title>
+
+  <style>
+    :root {
+      --primary: #0050ff;
+      --bg: #f3f5fa;
+      --card: #fff;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      font-family: Arial;
+    }
+
+    .topbar {
+      background: var(--primary);
+      color: white;
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .topbar a {
+      color: white;
+      margin-left: 12px;
+      text-decoration: none;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 35px auto;
+      padding: 0 16px;
+    }
+
+    .card {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
+    }
+
+    .row p {
+      font-size: 16px;
+      margin: 10px 0;
+    }
+
+    button {
+      padding: 12px;
+      width: 100%;
+      margin-top: 15px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <div class="topbar">
+    <div style="font-size:18px;font-weight:bold;">Online Bank</div>
+    <div>
+      <a href="user-dashboard.html">Dashboard</a>
+      <a href="user-account.html">Accounts</a>
+      <a href="user-nominee.html">Nominee</a>
+      <a href="user-transactions.html">Transactions</a>
+      <a href="user-transactions-send.html">Money Transfer</a>
+      <a href="user-profile.html">Profile</a>
+      <a href="#" onclick="logout()">Logout</a>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <div class="card">
+      <h2>Your Profile</h2>
+
+      <div class="row">
+        <p><b>Name:</b> <span id="name"></span></p>
+        <p><b>Email:</b> <span id="email"></span></p>
+        <p><b>Phone:</b> <span id="phone"></span></p>
+        <p><b>Address:</b> <span id="address"></span></p>
+        <p><b>Account Created:</b> <span id="created"></span></p>
+      </div>
+
+      <button onclick="location.href='user-edit-profile.html'">Edit Profile</button>
+      <button onclick="location.href='user-change-password.html'">Change Password</button>
+    </div>
+
+  </div>
+
+  <script>
+    let userId = localStorage.getItem("userId");
+    if (!userId) location.href = "user-login.html";
+
+    async function loadProfile() {
+      const res = await fetch(`http://localhost:8080/api/users/${userId}`);
+      const u = await res.json();
+
+      document.getElementById("name").innerText = u.name;
+      document.getElementById("email").innerText = u.email;
+      document.getElementById("phone").innerText = u.phone;
+      document.getElementById("address").innerText = u.address;
+      document.getElementById("created").innerText = u.createdAt.replace("T", " ");
+    }
+
+    loadProfile();
+
+    function logout() {
+      localStorage.removeItem("userId");
+      location.href = "user-login.html";
+    }
+  </script>
+
+</body>
+
+</html>

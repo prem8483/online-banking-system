@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>User Dashboard</title>
+
+    <style>
+        :root {
+            --primary: #0050ff;
+            --bg: #f3f5fa;
+            --card: #fff;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial;
+            background: var(--bg);
+        }
+
+        .topbar {
+            background: var(--primary);
+            color: #fff;
+            padding: 14px 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .topbar a {
+            color: white;
+            margin-left: 12px;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 35px auto;
+            padding: 0 16px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
+            margin-bottom: 25px;
+        }
+
+        .noacc {
+            color: red;
+            font-size: 18px;
+            text-align: center;
+            padding: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="topbar">
+        <div style="font-size:18px;font-weight:bold;">Online Bank</div>
+        <div>
+            <a href="user-dashboard.html">Dashboard</a>
+            <a href="user-account.html">Accounts</a>
+            <a href="user-nominee.html">Nominee</a>
+            <a href="user-transactions.html">Transactions</a>
+            <a href="user-transactions-send.html">Money Transfer</a>
+            <a href="user-profile.html">Profile</a>
+            <a href="#" onclick="logout()">Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div class="card" id="accCard" style="display:none;">
+            <h2>Welcome!</h2>
+            <p>Your primary account:</p>
+            <p><b>Account No:</b> <span id="accNo"></span></p>
+            <p><b>Balance:</b> ₹ <span id="accBal"></span></p>
+        </div>
+
+        <div class="card noacc" id="noAccount" style="display:none;">
+            ❌ No bank account linked to your profile.<br>
+            Please contact bank staff to create an account.
+        </div>
+
+    </div>
+
+    <script>
+        let userId = localStorage.getItem("userId");
+        if (!userId) location.href = "user-login.html";
+
+        async function loadDashboard() {
+            const res = await fetch(`http://localhost:8080/api/accounts/user/${userId}`);
+            const list = await res.json();
+
+            if (list.length === 0) {
+                document.getElementById("noAccount").style.display = "block";
+            } else {
+                const a = list[0];
+                document.getElementById("accCard").style.display = "block";
+                document.getElementById("accNo").innerText = a.accountNo;
+                document.getElementById("accBal").innerText = a.balance;
+            }
+        }
+
+        loadDashboard();
+
+        function logout() {
+            localStorage.removeItem("userId");
+            location.href = "user-login.html";
+        }
+    </script>
+
+</body>
+
+</html>

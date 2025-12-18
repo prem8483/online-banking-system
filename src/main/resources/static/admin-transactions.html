@@ -29,10 +29,12 @@
                 <tr>
                     <th>Txn ID</th>
                     <th>Account No</th>
+                    <th>Related A/c</th>
                     <th>Type</th>
                     <th>Amount</th>
+                    <th>Status</th>
                     <th>Description</th>
-                    <th>Timestamp</th>
+                    <th>Date & Time</th>
                 </tr>
             </thead>
 
@@ -44,6 +46,20 @@
 
 
     <script>
+
+        function formatDateTime (dateStr) {
+            let d = new Date( dateStr )
+
+            return d.toLocaleString("en-IN", {
+                day : "2-digit",
+                month : "short",
+                year : "numeric",
+                hour : "2-digit",
+                minute : "2-digit",
+                hour12 : true
+            });
+        }
+
         async function loadTransactions() {
             try {
                 let res = await fetch("http://localhost:8080/api/admin/transactions");
@@ -53,14 +69,31 @@
                 table.innerHTML = "";
 
                 data.forEach(t => {
+
+                    let typeText = ""
+                    let amountText = ""
+                    let typeClass = ""
+
+                    if( t.txnType === "SEND") {
+                        typeText = "DEBIT"
+                        amountText = "-₹ "+t.amount
+                        typeClass = "text-danger fw-bold"
+                    } else if ( t.txnType === "RECEIVE") {
+                        typeText = "CREDIT"
+                        amountText = "+₹ "+t.amount
+                        typeClass = "text-success fw-bold"
+                    }
+
                     table.innerHTML += `
                         <tr>
                             <td>${t.txnId}</td>
                             <td>${t.accountNo}</td>
-                            <td>${t.txnType}</td>
-                            <td>₹${t.amount}</td>
+                            <td>${t.relatedAccountNumber}</td>
+                            <td class = "${typeClass}">${typeText}</td>
+                            <td class = "fw-bold">${amountText}</td>
+                            <td>${t.status ? "SUCCESS" : FAILED }</td>
                             <td>${t.description}</td>
-                            <td>${t.createdAt}</td>
+                            <td>${formatDateTime(t.createdAt)}</td>
                         </tr>
                     `;
                 });

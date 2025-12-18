@@ -55,12 +55,12 @@
                 data.forEach(t => {
                     table.innerHTML += `
                         <tr>
-                            <td>${t.txn_id}</td>
-                            <td>${t.account_no}</td>
-                            <td>${t.type}</td>
+                            <td>${t.txnId}</td>
+                            <td>${t.accountNo}</td>
+                            <td>${t.txnType}</td>
                             <td>₹${t.amount}</td>
                             <td>${t.description}</td>
-                            <td>${t.created_at}</td>
+                            <td>${t.createdAt}</td>
                         </tr>
                     `;
                 });

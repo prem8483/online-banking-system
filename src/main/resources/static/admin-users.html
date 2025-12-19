@@ -131,6 +131,17 @@ async function load(){
     body.innerHTML = "";
 
     list.forEach(u => {
+
+        let blockedBtn = ""
+        let unblockedBtn = ""
+
+        if( u.blocked == true ) {
+            blockedBtn = ""
+            unblockedBtn = `<button onclick = "unblock(${u.userId})">Unblock</button>`
+        } else {
+            blockedBtn = `<button onclick = "block(${u.userId})">Block</button>`
+            unblockedBtn = ""
+        }
         body.innerHTML += `
             <tr>
                 <td>${u.userId}</td>
@@ -138,27 +149,36 @@ async function load(){
                 <td>${u.email}</td>
                 <td>${u.phone}</td>
                 <td>
-                    <button onclick="block(${u.userId})">Block</button>
-                    <button onclick="unblock(${u.userId})">Unblock</button>
-                    <button onclick="del(${u.userId})">Delete</button>
+                    ${blockedBtn}
+                    ${unblockedBtn}
+                    <button id = "del-user" onclick="del(${u.userId})">Delete</button>
                 </td>
             </tr>
         `;
     });
 }
 
-async function block(id){
-    await fetch(`http://localhost:8080/api/admin/block/${id}`, { method:"POST" });
+async function block(userId){
+    await fetch(`http://localhost:8080/api/admin/block/${userId}`, { 
+        method:"POST"
+    });
+    alert("User is blocked successfully")
     load();
 }
 
-async function unblock(id){
-    await fetch(`http://localhost:8080/api/admin/unblock/${id}`, { method:"POST" });
+async function unblock(userId){
+    await fetch(`http://localhost:8080/api/admin/unblock/${userId}`, { 
+        method:"POST" 
+    });
+    alert("User is unblocked successfully")
     load();
 }
 
-async function del(id){
-    await fetch(`http://localhost:8080/api/admin/delete/${id}`, { method:"POST" });
+async function del(userId){
+    await fetch(`http://localhost:8080/api/admin/delete/${userId}`, { 
+        method:"POST" 
+    });
+    alert("User is deleted successfully")
     load();
 }
 

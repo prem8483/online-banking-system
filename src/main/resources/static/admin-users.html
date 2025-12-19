@@ -2,18 +2,110 @@
 <html>
 <head>
     <title>Manage Users</title>
-    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f3f5fa;
+        }
+
+        header {
+            background: #1e3c72;
+            color: white;
+            padding: 16px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 22px;
+        }
+
+        .btn {
+            padding: 8px 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            background: white;
+            color: #1e3c72;
+        }
+
+        .list-box {
+            width: 90%;
+            max-width: 1100px;
+            margin: 30px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #eef1f7;
+        }
+
+        th, td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:hover {
+            background: #f9f9f9;
+        }
+
+        button {
+            padding: 7px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            margin-right: 6px;
+        }
+
+        button:hover {
+            opacity: 0.85;
+        }
+
+        /* Action buttons */
+        td button:nth-child(1) {
+            background: #ff9800;
+            color: white;
+        }
+
+        td button:nth-child(2) {
+            background: #4caf50;
+            color: white;
+        }
+
+        td button:nth-child(3) {
+            background: #f44336;
+            color: white;
+        }
+    </style>
 </head>
 
 <body>
 
 <header>
     <h1>Manage Users</h1>
+    <button class="btn" onclick="load()">Refresh</button>
 </header>
 
 <div class="list-box">
-
-    <button class="btn" onclick="load()">Refresh</button>
 
     <table id="tbl">
         <thead>
@@ -30,55 +122,48 @@
     </table>
 </div>
 
-
 <script>
-
 async function load(){
-
     let res = await fetch("http://localhost:8080/api/admin/users");
-
     let list = await res.json();
 
     let body = document.querySelector("#tbl tbody");
+    body.innerHTML = "";
 
-    body.innerHTML="";
-
-    list.forEach(u=>{
-
+    list.forEach(u => {
         body.innerHTML += `
             <tr>
                 <td>${u.userId}</td>
                 <td>${u.name}</td>
                 <td>${u.email}</td>
                 <td>${u.phone}</td>
-
                 <td>
                     <button onclick="block(${u.userId})">Block</button>
                     <button onclick="unblock(${u.userId})">Unblock</button>
                     <button onclick="del(${u.userId})">Delete</button>
                 </td>
-            </tr>`;
-    })
-
+            </tr>
+        `;
+    });
 }
 
 async function block(id){
-    await fetch(`http://localhost:8080/api/admin/block/${id}`,{ method:"POST" });
+    await fetch(`http://localhost:8080/api/admin/block/${id}`, { method:"POST" });
     load();
 }
 
 async function unblock(id){
-    await fetch(`http://localhost:8080/api/admin/unblock/${id}`,{ method:"POST" });
+    await fetch(`http://localhost:8080/api/admin/unblock/${id}`, { method:"POST" });
     load();
 }
 
 async function del(id){
-    await fetch(`http://localhost:8080/api/admin/delete/${id}`,{ method:"POST" });
+    await fetch(`http://localhost:8080/api/admin/delete/${id}`, { method:"POST" });
     load();
 }
 
 load();
-
 </script>
+
 </body>
 </html>

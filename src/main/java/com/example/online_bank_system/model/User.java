@@ -25,7 +25,9 @@ public class User {
     
     @Column(name = "created_at")
     LocalDateTime createdAt;
-
+    
+    boolean blocked = false;
+    
     public User() {
 
     }
@@ -86,7 +88,6 @@ public class User {
         this.createdAt = createdAt;
     }
 
-    boolean blocked = false;
 
     public boolean isBlocked() {
         return blocked;

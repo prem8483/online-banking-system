@@ -1,57 +1,91 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>User Registration</title>
-    <meta charset="UTF-8">
-    <style>
 
+<head>
+    <title>Bank Account Registration</title>
+    <meta charset="UTF-8">
+
+    <style>
         body {
             margin: 0;
-            padding: 0;
-            font-family: Arial;
-            background: #f2f5fb;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #e6eeff, #f8faff);
         }
 
-        .center-box {
-            width: 420px;
+        .page {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form-box {
+            width: 92%;
+            max-width: 1100px;
             background: white;
-            padding: 30px;
-            margin: 40px auto;
-            border-radius: 12px;
-            box-shadow: 0 0 18px rgba(0,0,0,0.1);
+            border-radius: 16px;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+            padding: 35px 45px;
         }
 
         h2 {
             text-align: center;
-            margin-bottom: 25px;
             color: #0b63ff;
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 28px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
         }
 
         label {
-            display: block;
-            font-size: 14px;
-            margin-top: 15px;
+            font-size: 13px;
             color: #444;
         }
 
-        input {
+        input,
+        select {
             width: 100%;
-            padding: 12px;
+            padding: 11px;
             margin-top: 6px;
-            border: 1px solid #bbb;
+            border: 1px solid #ccc;
             border-radius: 8px;
             font-size: 14px;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #0b63ff;
+        }
+
+        .full {
+            grid-column: span 3;
+        }
+
+        .btn {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
         }
 
         button {
-            width: 100%;
-            padding: 12px;
-            margin-top: 22px;
+            width: 280px;
+            padding: 14px;
             background: #0b63ff;
-            border: none;
             color: white;
+            border: none;
+            border-radius: 10px;
             font-size: 16px;
-            border-radius: 8px;
             cursor: pointer;
         }
 
@@ -61,7 +95,7 @@
 
         .bottom-text {
             text-align: center;
-            margin-top: 18px;
+            margin-top: 22px;
             font-size: 14px;
         }
 
@@ -70,63 +104,216 @@
             text-decoration: none;
         }
 
+        @media (max-width: 900px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .full {
+                grid-column: span 2;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full {
+                grid-column: span 1;
+            }
+        }
+
+        .grid>div {
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 
 <body>
 
-    <div class="center-box">
-        <h2>User Registration</h2>
+    <div class="page">
+        <div class="form-box">
+            <h2>Open Bank Account</h2>
+            <div class="subtitle">Submit your details to apply for a new account</div>
 
-        <label>Full Name</label>
-        <input type="text" id="name">
+            <div class="grid">
 
-        <label>Email</label>
-        <input type="text" id="email">
+                <div>
+                    <label>Full Name</label>
+                    <input type="text" id="name">
+                </div>
 
-        <label>Phone</label>
-        <input type="text" id="phone">
+                <div>
+                    <label>Date of Birth</label>
+                    <input type="date" id="dob">
+                </div>
 
-        <label>Password</label>
-        <input type="password" id="password">
+                <div>
+                    <label>Gender</label>
+                    <select id="gender">
+                        <option value="">Select</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                        <option>Other</option>
+                    </select>
+                </div>
 
-        <label>Address</label>
-        <input type="text" id="address">
+                <div>
+                    <label>Email</label>
+                    <input type="email" id="email">
+                </div>
 
-        <button onclick="register()">Register</button>
+                <div>
+                    <label>Phone</label>
+                    <input type="text" id="phone">
+                </div>
 
-        <div class="bottom-text">
-            Already have an account? <a href="user-login.html">Login here</a>
+                <div>
+                    <label>Nationality</label>
+                    <input type="text" id="nationality" value="Indian">
+                </div>
+
+                <div>
+                    <label>Occupation</label>
+                    <select id="occupation">
+                        <option value="">Select</option>
+                        <option>Student</option>
+                        <option>Employed</option>
+                        <option>Self-Employed</option>
+                        <option>Business</option>
+                        <option>Retired</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Annual Income</label>
+                    <select id="income">
+                        <option value="">Select</option>
+                        <option>Below 2 Lakh</option>
+                        <option>2 - 5 Lakh</option>
+                        <option>5 - 10 Lakh</option>
+                        <option>Above 10 Lakh</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Marital Status</label>
+                    <select id="marital">
+                        <option value="">Select</option>
+                        <option>Single</option>
+                        <option>Married</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Aadhaar Number</label>
+                    <input type="text" id="aadhaar">
+                </div>
+
+                <div>
+                    <label>PAN Number</label>
+                    <input type="text" id="pan">
+                </div>
+
+                <div>
+                    <label>Account Type</label>
+                    <select id="accountType">
+                        <option value="">Select</option>
+                        <option>Savings</option>
+                        <option>Current</option>
+                    </select>
+                </div>
+
+                <div class="full">
+                    <label>Address</label>
+                    <input type="text" id="address">
+                </div>
+
+                <div>
+                    <label>State</label>
+                    <input type="text" id="state">
+                </div>
+
+                <div>
+                    <label>City</label>
+                    <input type="text" id="city">
+                </div>
+
+                <div>
+                    <label>Pincode</label>
+                    <input type="text" id="pincode">
+                </div>
+
+                <div>
+                    <label>Nominee Name</label>
+                    <input type="text" id="nomineeName">
+                </div>
+
+                <div>
+                    <label>Nominee Relation</label>
+                    <input type="text" id="nomineeRelation">
+                </div>
+
+                <div>
+                    <label>Password</label>
+                    <input type="password" id="password">
+                </div>
+
+            </div>
+
+            <div class="btn">
+                <button onclick="register()">Submit Application</button>
+            </div>
+
+            <div class="bottom-text">
+                Already applied? <a href="user-login.html">Login</a>
+            </div>
         </div>
     </div>
 
-<script>
-    async function register() {
-        let user = {
-            name: document.getElementById("name").value,
-            email: document.getElementById("email").value,
-            phone: document.getElementById("phone").value,
-            password: document.getElementById("password").value,
-            address: document.getElementById("address").value
-        };
+    <script>
+        async function register() {
 
-        const res = await fetch("http://localhost:8080/api/forms/apply", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(user)
-        });
+            let user = {
+                name: name.value,
+                dob: dob.value,
+                gender: gender.value,
+                email: email.value,
+                phone: phone.value,
+                nationality: nationality.value,
+                occupation: occupation.value,
+                income: income.value,
+                maritalStatus: marital.value,
+                aadhaar: aadhaar.value,
+                pan: pan.value,
+                accountType: accountType.value,
+                address: address.value,
+                state: state.value,
+                city: city.value,
+                pincode: pincode.value,
+                nomineeName: nomineeName.value,
+                nomineeRelation: nomineeRelation.value,
+                password: password.value
+            };
 
-        if (res.status === 200) {
-            let data = await res.json();
+            const res = await fetch("http://localhost:8080/api/forms/apply", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(user)
+            });
 
-            alert("Registration Successful!");
-            alert("We will inform you ones your account is created")
-            location.href = "index.html";
-        } else {
-            alert("Registration Failed!");
+            if (res.status === 200) {
+                alert("Application submitted successfully!");
+                alert("We will inform you once your account is created.");
+                location.href = "index.html";
+            } else {
+                alert("Registration failed!");
+            }
         }
-    }
-</script>
+    </script>
 
 </body>
+
 </html>

@@ -1,8 +1,7 @@
 package com.example.online_bank_system.model;
 
-import java.time.LocalDateTime;
+import java.sql.Date;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,24 +12,25 @@ import jakarta.persistence.Table;
 @Table(name = "Users")
 public class User {
 
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
     int userId;
-    String name;
-    String email;
-    String phone;
-    String password;
-    String address;
-    
-    @Column(name = "created_at")
-    LocalDateTime createdAt;
-    
-    boolean blocked = false;
-    
-    public User() {
 
-    }
+    String fullName;
+    Date date;
+    String gender;
+    String email;
+    int number;
+    String nationality;
+
+    String occupation;
+
+    double annualIncome;
+    String maritalStatus;
+
+    int aadharNumber;
+    String panNumber;
+    String accountType;
 
     public int getUserId() {
         return userId;
@@ -40,12 +40,28 @@ public class User {
         this.userId = userId;
     }
 
-    public String getName() {
-        return name;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public String getEmail() {
@@ -56,20 +72,68 @@ public class User {
         this.email = email;
     }
 
-    public String getPhone() {
-        return phone;
+    public int getNumber() {
+        return number;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setNumber(int number) {
+        this.number = number;
     }
 
-    public String getPassword() {
-        return password;
+    public String getNationality() {
+        return nationality;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
+    }
+
+    public String getOccupation() {
+        return occupation;
+    }
+
+    public void setOccupation(String occupation) {
+        this.occupation = occupation;
+    }
+
+    public double getAnnualIncome() {
+        return annualIncome;
+    }
+
+    public void setAnnualIncome(double annualIncome) {
+        this.annualIncome = annualIncome;
+    }
+
+    public String getMaritalStatus() {
+        return maritalStatus;
+    }
+
+    public void setMaritalStatus(String maritalStatus) {
+        this.maritalStatus = maritalStatus;
+    }
+
+    public int getAadharNumber() {
+        return aadharNumber;
+    }
+
+    public void setAadharNumber(int aadharNumber) {
+        this.aadharNumber = aadharNumber;
+    }
+
+    public String getPanNumber() {
+        return panNumber;
+    }
+
+    public void setPanNumber(String panNumber) {
+        this.panNumber = panNumber;
+    }
+
+    public String getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(String accountType) {
+        this.accountType = accountType;
     }
 
     public String getAddress() {
@@ -80,21 +144,43 @@ public class User {
         this.address = address;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public String getCity() {
+        return city;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setCity(String city) {
+        this.city = city;
     }
 
-
-    public boolean isBlocked() {
-        return blocked;
+    public String getState() {
+        return state;
     }
 
-    public void setBlocked(boolean blocked) {
-        this.blocked = blocked;
+    public void setState(String state) {
+        this.state = state;
     }
+
+    public int getPincode() {
+        return pincode;
+    }
+
+    public void setPincode(int pincode) {
+        this.pincode = pincode;
+    }
+
+    public int getTransactionPassword() {
+        return transactionPassword;
+    }
+
+    public void setTransactionPassword(int transactionPassword) {
+        this.transactionPassword = transactionPassword;
+    }
+
+    String address;
+    String city;
+    String state;
+    int pincode;
+
+    int transactionPassword;
 
 }

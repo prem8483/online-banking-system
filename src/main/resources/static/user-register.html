@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>Bank Account Registration</title>
     <meta charset="UTF-8">
@@ -16,7 +15,8 @@
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
+            padding: 40px 0;
         }
 
         .form-box {
@@ -25,7 +25,7 @@
             background: white;
             border-radius: 16px;
             box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
-            padding: 35px 45px;
+            padding: 35px 45px 45px;
         }
 
         h2 {
@@ -38,33 +38,50 @@
             text-align: center;
             color: #666;
             font-size: 14px;
+            margin-bottom: 35px;
+        }
+
+        /* SECTION STYLES */
+        .section {
+            border: 1px solid #e0e6ff;
+            border-radius: 14px;
+            padding: 22px;
             margin-bottom: 28px;
         }
 
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #0b63ff;
+            margin-bottom: 18px;
+            border-left: 4px solid #0b63ff;
+            padding-left: 10px;
+        }
+
+        /* GRID */
         .grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 18px;
+            gap: 20px;
         }
 
         label {
             font-size: 13px;
             color: #444;
+            display: block;
+            margin-bottom: 6px;
         }
 
-        input,
-        select {
+        input, select {
             width: 100%;
-            padding: 11px;
-            margin-top: 6px;
+            padding: 12px;
             border: 1px solid #ccc;
             border-radius: 8px;
             font-size: 14px;
             outline: none;
         }
 
-        input:focus,
-        select:focus {
+        input:focus, select:focus {
             border-color: #0b63ff;
         }
 
@@ -72,15 +89,16 @@
             grid-column: span 3;
         }
 
+        /* BUTTON */
         .btn {
-            margin-top: 30px;
             display: flex;
             justify-content: center;
+            margin-top: 30px;
         }
 
         button {
-            width: 280px;
-            padding: 14px;
+            width: 300px;
+            padding: 15px;
             background: #0b63ff;
             color: white;
             border: none;
@@ -95,7 +113,7 @@
 
         .bottom-text {
             text-align: center;
-            margin-top: 22px;
+            margin-top: 25px;
             font-size: 14px;
         }
 
@@ -104,11 +122,11 @@
             text-decoration: none;
         }
 
+        /* RESPONSIVE */
         @media (max-width: 900px) {
             .grid {
                 grid-template-columns: repeat(2, 1fr);
             }
-
             .full {
                 grid-column: span 2;
             }
@@ -118,27 +136,24 @@
             .grid {
                 grid-template-columns: 1fr;
             }
-
             .full {
                 grid-column: span 1;
             }
-        }
-
-        .grid>div {
-            margin-bottom: 10px;
         }
     </style>
 </head>
 
 <body>
 
-    <div class="page">
-        <div class="form-box">
-            <h2>Open Bank Account</h2>
-            <div class="subtitle">Submit your details to apply for a new account</div>
+<div class="page">
+    <div class="form-box">
+        <h2>Open Bank Account</h2>
+        <div class="subtitle">Fill in the details below to apply for a new bank account</div>
 
+        <!-- PERSONAL INFO -->
+        <div class="section">
+            <div class="section-title">Personal Information</div>
             <div class="grid">
-
                 <div>
                     <label>Full Name</label>
                     <input type="text" id="name">
@@ -173,7 +188,13 @@
                     <label>Nationality</label>
                     <input type="text" id="nationality" value="Indian">
                 </div>
+            </div>
+        </div>
 
+        <!-- KYC & ACCOUNT -->
+        <div class="section">
+            <div class="section-title">KYC & Account Details</div>
+            <div class="grid">
                 <div>
                     <label>Occupation</label>
                     <select id="occupation">
@@ -225,7 +246,13 @@
                         <option>Current</option>
                     </select>
                 </div>
+            </div>
+        </div>
 
+        <!-- ADDRESS -->
+        <div class="section">
+            <div class="section-title">Address Details</div>
+            <div class="grid">
                 <div class="full">
                     <label>Address</label>
                     <input type="text" id="address">
@@ -245,7 +272,13 @@
                     <label>Pincode</label>
                     <input type="text" id="pincode">
                 </div>
+            </div>
+        </div>
 
+        <!-- NOMINEE -->
+        <div class="section">
+            <div class="section-title">Nominee Details</div>
+            <div class="grid">
                 <div>
                     <label>Nominee Name</label>
                     <input type="text" id="nomineeName">
@@ -255,65 +288,69 @@
                     <label>Nominee Relation</label>
                     <input type="text" id="nomineeRelation">
                 </div>
+            </div>
+        </div>
 
+        <!-- PASSWORD -->
+        <div class="section">
+            <div class="section-title">Set Password</div>
+            <div class="grid">
                 <div>
                     <label>Password</label>
                     <input type="password" id="password">
                 </div>
-
-            </div>
-
-            <div class="btn">
-                <button onclick="register()">Submit Application</button>
-            </div>
-
-            <div class="bottom-text">
-                Already applied? <a href="user-login.html">Login</a>
             </div>
         </div>
+
+        <div class="btn">
+            <button onclick="register()">Submit Application</button>
+        </div>
+
+        <div class="bottom-text">
+            Already applied? <a href="user-login.html">Login</a>
+        </div>
     </div>
+</div>
 
-    <script>
-        async function register() {
+<script>
+async function register() {
+    let user = {
+        name: name.value,
+        dob: dob.value,
+        gender: gender.value,
+        email: email.value,
+        phone: phone.value,
+        nationality: nationality.value,
+        occupation: occupation.value,
+        income: income.value,
+        maritalStatus: marital.value,
+        aadhaar: aadhaar.value,
+        pan: pan.value,
+        accountType: accountType.value,
+        address: address.value,
+        state: state.value,
+        city: city.value,
+        pincode: pincode.value,
+        nomineeName: nomineeName.value,
+        nomineeRelation: nomineeRelation.value,
+        password: password.value
+    };
 
-            let user = {
-                name: name.value,
-                dob: dob.value,
-                gender: gender.value,
-                email: email.value,
-                phone: phone.value,
-                nationality: nationality.value,
-                occupation: occupation.value,
-                income: income.value,
-                maritalStatus: marital.value,
-                aadhaar: aadhaar.value,
-                pan: pan.value,
-                accountType: accountType.value,
-                address: address.value,
-                state: state.value,
-                city: city.value,
-                pincode: pincode.value,
-                nomineeName: nomineeName.value,
-                nomineeRelation: nomineeRelation.value,
-                password: password.value
-            };
+    const res = await fetch("http://localhost:8080/api/forms/apply", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(user)
+    });
 
-            const res = await fetch("http://localhost:8080/api/forms/apply", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(user)
-            });
-
-            if (res.status === 200) {
-                alert("Application submitted successfully!");
-                alert("We will inform you once your account is created.");
-                location.href = "index.html";
-            } else {
-                alert("Registration failed!");
-            }
-        }
-    </script>
+    if (res.status === 200) {
+        alert("Application submitted successfully!");
+        alert("We will inform you once your account is created.");
+        location.href = "index.html";
+    } else {
+        alert("Registration failed!");
+    }
+}
+</script>
 
 </body>
-
 </html>

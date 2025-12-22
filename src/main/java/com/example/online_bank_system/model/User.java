@@ -1,6 +1,7 @@
 package com.example.online_bank_system.model;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,6 +32,28 @@ public class User {
     int aadharNumber;
     String panNumber;
     String accountType;
+    String address;
+    String city;
+    String state;
+    int pincode;
+
+    int transactionPassword;
+    boolean status;
+
+    LocalDateTime createdAt;
+
+    public User () {
+
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
 
     public int getUserId() {
         return userId;
@@ -176,11 +199,15 @@ public class User {
         this.transactionPassword = transactionPassword;
     }
 
-    String address;
-    String city;
-    String state;
-    int pincode;
 
-    int transactionPassword;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
 
 }

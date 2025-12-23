@@ -54,7 +54,7 @@ public class AdminService {
     public boolean blockUser(int userId) {
         User u = userRepository.findById(userId).orElse(null);
         if (u == null) return false;
-        u.setBlocked(true);
+        u.setStatus(true);
         userRepository.save(u);
         return true;
     }
@@ -63,7 +63,7 @@ public class AdminService {
     public boolean unblockUser(int userId) {
         User u = userRepository.findById(userId).orElse(null);
         if (u == null) return false;
-        u.setBlocked(false);
+        u.setStatus(false);
         userRepository.save(u);
         return true;
     }

@@ -17,11 +17,11 @@ public class User {
     @Id
     int userId;
 
-    String fullName;
-    Date date;
+    String name;
+    Date dob;
     String gender;
     String email;
-    int number;
+    String phone;
     String nationality;
 
     String occupation;
@@ -37,15 +37,26 @@ public class User {
     String state;
     int pincode;
 
-    int transactionPassword;
     boolean status;
 
     LocalDateTime createdAt;
+    String password;
+
+    public String getPassword() {
+        return password;
+    }
+
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
 
     public User () {
 
     }
 
+    
     public boolean isStatus() {
         return status;
     }
@@ -61,22 +72,6 @@ public class User {
 
     public void setUserId(int userId) {
         this.userId = userId;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 
     public String getGender() {
@@ -95,13 +90,22 @@ public class User {
         this.email = email;
     }
 
-    public int getNumber() {
-        return number;
+    public String getName() {
+        return name;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
+    public void setName(String name) {
+        this.name = name;
     }
+
+    public Date getDob() {
+        return dob;
+    }
+
+    public void setDob(Date dob) {
+        this.dob = dob;
+    }
+
 
     public String getNationality() {
         return nationality;
@@ -191,15 +195,6 @@ public class User {
         this.pincode = pincode;
     }
 
-    public int getTransactionPassword() {
-        return transactionPassword;
-    }
-
-    public void setTransactionPassword(int transactionPassword) {
-        this.transactionPassword = transactionPassword;
-    }
-
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -209,5 +204,12 @@ public class User {
         this.createdAt = createdAt;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
 }

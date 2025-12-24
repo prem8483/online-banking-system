@@ -1,5 +1,6 @@
 package com.example.online_bank_system.model;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
@@ -18,20 +19,40 @@ public class ApplicationForm {
     @Column(name = "application_id")
     private int applicationId;
 
-    private String name;
-    private String email;
-    private String phone;
-    private String address;
-    private String dob;
-    private String pan;
-    private String aadhar;
+    String name;
+    Date dob;
+    String gender;
+    String email;
+    String phone;
+    String nationality;
 
-    private String status;
+    String occupation;
 
+    String annualIncome;
+    String maritalStatus;
+
+    @Column( name = "aadhaar_number")
+    String aadhaarNumber;
+    String panNumber;
+    String accountType;
+    String address;
+    String city;
+    String state;
+    String pincode;
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    String status;
+    
     public ApplicationForm() {}
+    
+    public String isStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public int getApplicationId() {
         return applicationId;
@@ -46,7 +67,23 @@ public class ApplicationForm {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name; 
+    }
+
+    public Date getDob() {
+        return dob;
+    }
+
+    public void setDob(Date dob) {
+        this.dob = dob;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public String getEmail() {
@@ -65,6 +102,62 @@ public class ApplicationForm {
         this.phone = phone;
     }
 
+    public String getNationality() {
+        return nationality;
+    }
+
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
+    }
+
+    public String getOccupation() {
+        return occupation;
+    }
+
+    public void setOccupation(String occupation) {
+        this.occupation = occupation;
+    }
+
+    public String getAnnualIncome() {
+        return annualIncome;
+    }
+
+    public void setAnnualIncome(String annualIncome) {
+        this.annualIncome = annualIncome;
+    }
+
+    public String getMaritalStatus() {
+        return maritalStatus;
+    }
+
+    public void setMaritalStatus(String maritalStatus) {
+        this.maritalStatus = maritalStatus;
+    }
+
+    public String getAadhaarNumber() {
+        return aadhaarNumber;
+    }
+
+    public void setAadharNumber(String aadhaarNumber) {
+        this.aadhaarNumber = aadhaarNumber;
+    }
+
+    public String getPanNumber() { 
+        return panNumber;
+    }
+
+    public void setPanNumber(String panNumber) {
+        this.panNumber = panNumber;
+    }
+
+    public String getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(String accountType) {
+        this.accountType = accountType;
+    }
+
     public String getAddress() {
         return address;
     }
@@ -73,36 +166,28 @@ public class ApplicationForm {
         this.address = address;
     }
 
-    public String getDob() {
-        return dob;
+    public String getCity() {
+        return city;
     }
 
-    public void setDob(String dob) {
-        this.dob = dob;
+    public void setCity(String city) {
+        this.city = city;
     }
 
-    public String getPan() {
-        return pan;
+    public String getState() {
+        return state;
     }
 
-    public void setPan(String pan) {
-        this.pan = pan;
+    public void setState(String state) {
+        this.state = state;
     }
 
-    public String getAadhar() {
-        return aadhar;
+    public String getPincode() {
+        return pincode;
     }
 
-    public void setAadhar(String aadhar) {
-        this.aadhar = aadhar;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
+    public void setPincode(String pincode) {
+        this.pincode = pincode;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -112,4 +197,7 @@ public class ApplicationForm {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
+
+
+    
 }

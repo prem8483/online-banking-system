@@ -14,11 +14,11 @@ public class Admin {
     @Column(name = "admin_id")
     int adminId;
     String username;
-    String password;
+    String password; 
     
     public Admin () {
 
-    }
+    } 
 
     public int getAdminId() {
         return adminId;

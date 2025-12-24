@@ -52,15 +52,14 @@ public class ApplicationFormController {
         return ResponseEntity.ok(result);
     }
 
-    // @GetMapping("/admin/application/reject/{id}")
-    // public ResponseEntity<String> rejectFormsById ( @PathVariable int id ) {
-    //     boolean check = applicationFormService.rejectForm(id);
-    //     if ( check == false ) {
-    //         return ResponseEntity.badRequest().body("Application Not Found");
-    //     }
-
-    //     return ResponseEntity.ok("REJECTED");
-    // }
+    @PostMapping("/admin/application/reject/{id}")
+    public ResponseEntity<String> rejectFormsById ( @PathVariable int id ) {
+        boolean check = applicationFormService.rejectForm(id);
+        if ( check == false ) {
+            return ResponseEntity.badRequest().body("Application Not Found");
+        }
+        return ResponseEntity.ok("REJECTED");
+    }
 
     @GetMapping("/admin/application/approvedShow") 
     public ResponseEntity<List<ApplicationForm>> showApprovedForms (  ) {

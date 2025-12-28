@@ -10,9 +10,11 @@ import org.springframework.stereotype.Service;
 
 import com.example.online_bank_system.model.Account;
 import com.example.online_bank_system.model.ApplicationForm;
+import com.example.online_bank_system.model.Nominee;
 import com.example.online_bank_system.model.User;
 import com.example.online_bank_system.repository.AccountRepository;
 import com.example.online_bank_system.repository.ApplicationFormRepository;
+import com.example.online_bank_system.repository.NomineeRepository;
 import com.example.online_bank_system.repository.UserRepository;
 
 @Service
@@ -23,6 +25,9 @@ public class ApplicationFormService {
 
     @Autowired
     private AdminService adminService;
+
+    @Autowired
+    private NomineeRepository nomineeRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -63,18 +68,40 @@ public class ApplicationFormService {
         user.setAddress(form.getAddress());
         user.setPassword(password);
         user.setCreatedAt(LocalDateTime.now());
+        user.setAadharNumber(form.getAadhaarNumber());
+        user.setDob(form.getDob());
+        user.setGender(form.getGender());
+        user.setNationality(form.getNationality());
+        user.setOccupation(form.getOccupation());
+        user.setAnnualIncome(form.getAnnualIncome());
+        user.setMaritalStatus(form.getMaritalStatus());
+        user.setPanNumber(form.getPanNumber());
+        user.setAccountType(form.getAccountType());
+        user.setState(form.getState());
+        user.setCity(form.getCity());
+        user.setPincode(form.getPincode());
 
         User savedUser = userRepository.save(user);
 
         Account account = new Account();
 
         account.setUserId(savedUser.getUserId());
-        account.setAccountType("SAVINGS");
         account.setStatus(true);
         account.setBalance(0);
         account.setCreatedAt(LocalDateTime.now());
 
         Account savedAccount = accountRepository.save(account);
+
+        Nominee nominee = new Nominee();
+
+        nominee.setNomineeName(form.getNomineeName());
+        nominee.setNomineeAccountNo(form.getNomineeAccountNo());
+        nominee.setRelation(form.getRelation());
+        nominee.setBankName(form.getBankName());
+        nominee.setIfscCode(form.getIfscCode());
+        nominee.setUserId(savedUser.getUserId());
+
+        nomineeRepository.save(nominee);
 
         Map<String, String> result = new HashMap<>();
         result.put("Email", savedUser.getEmail());

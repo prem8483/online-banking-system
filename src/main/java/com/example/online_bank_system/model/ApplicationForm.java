@@ -25,13 +25,11 @@ public class ApplicationForm {
     String email;
     String phone;
     String nationality;
-
     String occupation;
-
     String annualIncome;
     String maritalStatus;
 
-    @Column( name = "aadhaar_number")
+    @Column(name = "aadhaar_number")
     String aadhaarNumber;
     String panNumber;
     String accountType;
@@ -43,15 +41,21 @@ public class ApplicationForm {
     private LocalDateTime createdAt;
 
     String status;
-    
-    public ApplicationForm() {}
-    
-    public String isStatus() {
-        return status;
-    }
 
-    public void setStatus(String status) {
-        this.status = status;
+    // Nominee
+    
+    @Column(name = "nominee_name")
+    String nomineeName;
+    String relation;
+    
+    @Column(name = "nominee_account_no")
+    int nomineeAccountNo;
+
+    String bankName;
+    String ifscCode;
+
+    public ApplicationForm() {
+        
     }
 
     public int getApplicationId() {
@@ -67,7 +71,7 @@ public class ApplicationForm {
     }
 
     public void setName(String name) {
-        this.name = name; 
+        this.name = name;
     }
 
     public Date getDob() {
@@ -138,11 +142,11 @@ public class ApplicationForm {
         return aadhaarNumber;
     }
 
-    public void setAadharNumber(String aadhaarNumber) {
+    public void setAadhaarNumber(String aadhaarNumber) {
         this.aadhaarNumber = aadhaarNumber;
     }
 
-    public String getPanNumber() { 
+    public String getPanNumber() {
         return panNumber;
     }
 
@@ -198,6 +202,53 @@ public class ApplicationForm {
         this.createdAt = createdAt;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getNomineeName() {
+        return nomineeName;
+    }
+
+    public void setNomineeName(String nomineeName) {
+        this.nomineeName = nomineeName;
+    }
+
+    public String getRelation() {
+        return relation;
+    }
+
+    public void setRelation(String relation) {
+        this.relation = relation;
+    }
+
+    public int getNomineeAccountNo() {
+        return nomineeAccountNo;
+    }
+
+    public void setNomineeAccountNo(int nomineeAccountNo) {
+        this.nomineeAccountNo = nomineeAccountNo;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+    public String getIfscCode() {
+        return ifscCode;
+    }
+
+    public void setIfscCode(String ifscCode) {
+        this.ifscCode = ifscCode;
+    }
 
     
 }

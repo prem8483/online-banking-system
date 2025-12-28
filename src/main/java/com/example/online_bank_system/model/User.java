@@ -26,16 +26,16 @@ public class User {
 
     String occupation;
 
-    double annualIncome;
+    String annualIncome;
     String maritalStatus;
 
-    int aadharNumber;
+    String aadharNumber;
     String panNumber;
     String accountType;
     String address;
     String city;
     String state;
-    int pincode;
+    String pincode;
 
     boolean status;
 
@@ -123,13 +123,6 @@ public class User {
         this.occupation = occupation;
     }
 
-    public double getAnnualIncome() {
-        return annualIncome;
-    }
-
-    public void setAnnualIncome(double annualIncome) {
-        this.annualIncome = annualIncome;
-    }
 
     public String getMaritalStatus() {
         return maritalStatus;
@@ -139,13 +132,27 @@ public class User {
         this.maritalStatus = maritalStatus;
     }
 
-    public int getAadharNumber() {
+  
+
+    public String getAnnualIncome() {
+        return annualIncome;
+    }
+
+
+    public void setAnnualIncome(String annualIncome) {
+        this.annualIncome = annualIncome;
+    }
+
+
+    public String getAadharNumber() {
         return aadharNumber;
     }
 
-    public void setAadharNumber(int aadharNumber) {
+
+    public void setAadharNumber(String aadharNumber) {
         this.aadharNumber = aadharNumber;
     }
+
 
     public String getPanNumber() {
         return panNumber;
@@ -187,11 +194,11 @@ public class User {
         this.state = state;
     }
 
-    public int getPincode() {
+    public String getPincode() {
         return pincode;
     }
 
-    public void setPincode(int pincode) {
+    public void setPincode(String pincode) {
         this.pincode = pincode;
     }
 

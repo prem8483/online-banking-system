@@ -24,7 +24,6 @@ public class Account {
 
     @Column(name = "user_id")
     int userId;
-
     
     @Column(name = "account_type")
     String accountType;
@@ -32,11 +31,12 @@ public class Account {
     double balance;
     boolean status;
     LocalDateTime createdAt;
-    
+
     public Account() {
         
     }
-    
+
+ 
     public User getUser() {
         return user;
     }

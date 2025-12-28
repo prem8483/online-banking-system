@@ -13,6 +13,8 @@ public class Nominee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "nominee_id")
     int nomineeId;
+
+    @Column(name = "user_id")
     int userId;
 
     @Column(name = "nominee_account_no")

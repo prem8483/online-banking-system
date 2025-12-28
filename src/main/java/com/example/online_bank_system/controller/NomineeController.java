@@ -20,14 +20,14 @@ import com.example.online_bank_system.service.NomineeService;
 public class NomineeController {
     
     @Autowired
-    NomineeService nomineeService;
+    NomineeService nomineeService;  
 
 
     @PostMapping
     public ResponseEntity<Nominee> add ( @RequestBody Nominee nominee  ) {
         Nominee saved = nomineeService.saveNominee(nominee);
         return ResponseEntity.ok(saved); 
-    }
+    } 
 
     @DeleteMapping("/delete/{nomineeId}")
     public ResponseEntity<String> delete ( @PathVariable int nomineeId ) {

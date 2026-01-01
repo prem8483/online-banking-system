@@ -6,38 +6,94 @@
     <title>Approved Applications</title>
 
     <style>
+        :root {
+            --primary: #0050ff;
+            --bg: #f0f3ff;
+            --card: #ffffff;
+            --text: #333;
+            --border: #e3e6f0;
+        }
+
         body {
-            font-family: Arial;
-            background: #f0f3ff;
             margin: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: var(--bg);
         }
 
+        /* ===== TOPBAR ===== */
         .topbar {
-            background: #0050ff;
+            background: var(--primary);
             color: white;
-            padding: 15px;
+            padding: 16px 24px;
             font-size: 20px;
+            font-weight: bold;
         }
 
+        /* ===== CONTAINER ===== */
         .container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 40px auto;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
+            background: var(--card);
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
         }
 
+        h2 {
+            margin: 0 0 20px;
+            color: var(--text);
+        }
+
+        /* ===== TABLE ===== */
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
         }
 
-        th,
+        thead {
+            background: #f6f8ff;
+        }
+
+        th {
+            text-align: left;
+            padding: 14px;
+            font-size: 14px;
+            color: #555;
+            border-bottom: 2px solid var(--border);
+        }
+
         td {
             padding: 14px;
-            border-bottom: 1px solid #ddd;
             font-size: 14px;
+            border-bottom: 1px solid var(--border);
+            color: #333;
+        }
+
+        tr:hover {
+            background: #f9faff;
+        }
+
+        /* ===== BUTTON ===== */
+        .btn-view {
+            padding: 7px 14px;
+            background: var(--primary);
+            color: white;
+            border-radius: 6px;
+            font-size: 13px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .btn-view:hover {
+            opacity: 0.9;
+        }
+
+        /* ===== EMPTY STATE ===== */
+        .empty {
+            text-align: center;
+            padding: 30px;
+            color: #777;
+            font-size: 15px;
         }
     </style>
 </head>
@@ -47,37 +103,55 @@
     <div class="topbar">Admin – Approved Applications</div>
 
     <div class="container">
+        <h2>Approved Applications</h2>
 
         <table id="approvedTable">
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>DOB</th>
-                <th>View</th>
-            </tr>
+            <thead>
+                <tr>
+                    <th>Application ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>DOB</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
         </table>
+
+        <div id="emptyMsg" class="empty" style="display:none;">
+            No approved applications found.
+        </div>
     </div>
 
     <script>
         async function loadApproved() {
-            const res = await fetch(`http://localhost:8080/api/forms/admin/application/approvedShow`);
+            const res = await fetch("http://localhost:8080/api/forms/admin/application/approvedShow");
             const list = await res.json();
 
-            const table = document.getElementById("approvedTable");
+            const body = document.querySelector("#approvedTable tbody");
+            const empty = document.getElementById("emptyMsg");
+
+            body.innerHTML = "";
+
+            if (list.length === 0) {
+                empty.style.display = "block";
+                return;
+            }
 
             list.forEach(f => {
-                const row = document.createElement("tr");
-
-                row.innerHTML = `
-            <td>${f.applicationId}</td>
-            <td>${f.name}</td>
-            <td>${f.email}</td>
-            <td>${f.dob}</td>
-            <td><a href="admin-view-application.html?id=${f.applicationId}">View</a></td>
-        `;
-
-                table.appendChild(row);
+                body.innerHTML += `
+                    <tr>
+                        <td>${f.applicationId}</td>
+                        <td>${f.name}</td>
+                        <td>${f.email}</td>
+                        <td>${f.dob}</td>
+                        <td>
+                            <a class="btn-view" href="admin-view-application.html?id=${f.applicationId}">
+                                View
+                            </a>
+                        </td>
+                    </tr>
+                `;
             });
         }
 

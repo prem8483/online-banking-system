@@ -8,20 +8,22 @@
   <style>
     :root {
       --primary: #0050ff;
-      --bg: #f3f5fa;
-      --card: #fff;
+      --bg: #f4f6fb;
+      --card: #ffffff;
+      --text: #333;
+      --muted: #777;
     }
 
     body {
       margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
       background: var(--bg);
-      font-family: Arial;
     }
 
     .topbar {
       background: var(--primary);
       color: white;
-      padding: 14px 20px;
+      padding: 14px 22px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -29,80 +31,192 @@
 
     .topbar a {
       color: white;
-      margin-left: 12px;
+      margin-left: 14px;
       text-decoration: none;
+      font-size: 14px;
     }
 
     .container {
-      max-width: 800px;
+      max-width: 1000px;
       margin: 35px auto;
       padding: 0 16px;
     }
 
-    .card {
-      background: white;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
+    .profile-card {
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
     }
 
-    .row p {
-      font-size: 16px;
-      margin: 10px 0;
+    .profile-header {
+      display: flex;
+      align-items: center;
+      padding: 30px;
+      border-bottom: 1px solid #eee;
     }
 
-    button {
-      padding: 12px;
-      width: 100%;
-      margin-top: 15px;
+    .avatar {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
       background: var(--primary);
       color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      font-weight: bold;
+      margin-right: 22px;
+    }
+
+    .profile-body {
+      padding: 30px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px 25px;
+    }
+
+    .field label {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .field div {
+      font-size: 15px;
+      font-weight: 500;
+      margin-top: 4px;
+    }
+
+    .actions {
+      margin-top: 30px;
+      display: flex;
+      gap: 15px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 14px;
+      font-size: 15px;
+      border-radius: 8px;
       border: none;
-      border-radius: 6px;
       cursor: pointer;
-      font-size: 16px;
       font-weight: bold;
     }
 
-    button:hover {
-      opacity: 0.9;
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-secondary {
+      background: #eef1ff;
+      color: var(--primary);
+    }
+
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
-
 </head>
 
 <body>
 
   <div class="topbar">
-    <div style="font-size:18px;font-weight:bold;">Online Bank</div>
+    <div><b>Online Bank</b></div>
     <div>
       <a href="user-dashboard.html">Dashboard</a>
       <a href="user-account.html">Accounts</a>
       <a href="user-nominee.html">Nominee</a>
       <a href="user-transactions.html">Transactions</a>
-      <a href="user-transactions-send.html">Money Transfer</a>
+      <a href="user-transactions-send.html">Transfer</a>
       <a href="user-profile.html">Profile</a>
       <a href="#" onclick="logout()">Logout</a>
     </div>
   </div>
 
   <div class="container">
+    <div class="profile-card">
 
-    <div class="card">
-      <h2>Your Profile</h2>
-
-      <div class="row">
-        <p><b>Name:</b> <span id="name"></span></p>
-        <p><b>Email:</b> <span id="email"></span></p>
-        <p><b>Phone:</b> <span id="phone"></span></p>
-        <p><b>Address:</b> <span id="address"></span></p>
-        <p><b>Account Created:</b> <span id="created"></span></p>
+      <div class="profile-header">
+        <div class="avatar" id="avatar">U</div>
+        <div>
+          <h2 id="name"></h2>
+          <p id="email"></p>
+        </div>
       </div>
 
-      <button onclick="location.href='user-edit-profile.html'">Edit Profile</button>
-      <button onclick="location.href='user-change-password.html'">Change Password</button>
-    </div>
+      <div class="profile-body">
+        <div class="grid">
 
+          <div class="field"><label>Phone</label>
+            <div id="phone"></div>
+          </div>
+          <div class="field"><label>Gender</label>
+            <div id="gender"></div>
+          </div>
+          <div class="field"><label>Date of Birth</label>
+            <div id="dob"></div>
+          </div>
+
+          <div class="field"><label>Nationality</label>
+            <div id="nationality"></div>
+          </div>
+          <div class="field"><label>Occupation</label>
+            <div id="occupation"></div>
+          </div>
+          <div class="field"><label>Annual Income</label>
+            <div id="income"></div>
+          </div>
+
+          <div class="field"><label>Marital Status</label>
+            <div id="marital"></div>
+          </div>
+          <div class="field"><label>Aadhaar Number</label>
+            <div id="aadhaar"></div>
+          </div>
+          <div class="field"><label>PAN Number</label>
+            <div id="pan"></div>
+          </div>
+
+          <div class="field"><label>Account Type</label>
+            <div id="accountType"></div>
+          </div>
+          <div class="field"><label>Address</label>
+            <div id="address"></div>
+          </div>
+          <div class="field"><label>City</label>
+            <div id="city"></div>
+          </div>
+
+          <div class="field"><label>State</label>
+            <div id="state"></div>
+          </div>
+          <div class="field"><label>Pincode</label>
+            <div id="pincode"></div>
+          </div>
+          <div class="field"><label>Account Created</label>
+            <div id="created"></div>
+          </div>
+
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-primary" onclick="location.href='user-edit-profile.html'">
+            Edit Profile
+          </button>
+          <button class="btn btn-secondary" onclick="location.href='user-change-password.html'">
+            Change Password
+          </button>
+        </div>
+      </div>
+
+    </div>
   </div>
 
   <script>
@@ -113,10 +227,23 @@
       const res = await fetch(`http://localhost:8080/api/users/${userId}`);
       const u = await res.json();
 
+      document.getElementById("avatar").innerText = u.name.charAt(0).toUpperCase();
       document.getElementById("name").innerText = u.name;
       document.getElementById("email").innerText = u.email;
       document.getElementById("phone").innerText = u.phone;
+      document.getElementById("gender").innerText = u.gender;
+      document.getElementById("dob").innerText = u.dob;
+      document.getElementById("nationality").innerText = u.nationality;
+      document.getElementById("occupation").innerText = u.occupation;
+      document.getElementById("income").innerText = u.annualIncome;
+      document.getElementById("marital").innerText = u.maritalStatus;
+      document.getElementById("aadhaar").innerText = u.aadharNumber;
+      document.getElementById("pan").innerText = u.panNumber;
+      document.getElementById("accountType").innerText = u.accountType;
       document.getElementById("address").innerText = u.address;
+      document.getElementById("city").innerText = u.city;
+      document.getElementById("state").innerText = u.state;
+      document.getElementById("pincode").innerText = u.pincode;
       document.getElementById("created").innerText = u.createdAt.replace("T", " ");
     }
 

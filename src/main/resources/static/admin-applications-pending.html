@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Pending Applications</title>
+
+    <style>
+        :root {
+            --warning: #ff9800;
+            --success: #2e7d32;
+            --danger: #d32f2f;
+            --bg: #fff8f0;
+            --card: #ffffff;
+            --border: #f0d9b5;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: var(--bg);
+        }
+
+        /* ===== TOPBAR ===== */
+        .topbar {
+            background: var(--warning);
+            color: white;
+            padding: 16px 24px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* ===== CONTAINER ===== */
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            background: var(--card);
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            margin: 0 0 20px;
+        }
+
+        /* ===== TABLE ===== */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #fff1dc;
+        }
+
+        th {
+            text-align: left;
+            padding: 14px;
+            font-size: 14px;
+            color: #555;
+            border-bottom: 2px solid var(--border);
+        }
+
+        td {
+            padding: 14px;
+            font-size: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr:hover {
+            background: #fffaf3;
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            padding: 7px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .btn-approve {
+            background: var(--success);
+            color: white;
+            margin-right: 8px;
+        }
+
+        .btn-reject {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        /* ===== EMPTY ===== */
+        .empty {
+            text-align: center;
+            padding: 30px;
+            color: #777;
+            font-size: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="topbar">Admin – Pending Applications</div>
+
+    <div class="container">
+        <h2>Pending Applications</h2>
+
+        <table id="pendingTable">
+            <thead>
+                <tr>
+                    <th>Application ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <div id="emptyMsg" class="empty" style="display:none;">
+            No pending applications found.
+        </div>
+    </div>
+
+    <script>
+        async function loadPending() {
+            const res = await fetch("http://localhost:8080/api/forms/admin/application/pending");
+            const list = await res.json();
+
+            const body = document.querySelector("#pendingTable tbody");
+            const empty = document.getElementById("emptyMsg");
+
+            body.innerHTML = "";
+
+            if (list.length === 0) {
+                empty.style.display = "block";
+                return;
+            }
+
+            list.forEach(app => {
+                body.innerHTML += `
+                    <tr>
+                        <td>${app.applicationId}</td>
+                        <td>${app.name}</td>
+                        <td>${app.email}</td>
+                        <td>${app.phone}</td>
+                        <td>
+                            <a class="btn btn-approve"
+                               href="http://localhost:8080/api/forms/admin/application/approve/${app.applicationId}">
+                               Approve
+                            </a>
+                            <a class="btn btn-reject"
+                               href="http://localhost:8080/api/forms/admin/application/rejectedForms/${app.applicationId}">
+                               Reject
+                            </a>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        loadPending();
+    </script>
+
+</body>
+
+</html>

@@ -9,76 +9,114 @@
         :root {
             --primary: #0050ff;
             --bg: #f3f5fa;
-            --card: #fff;
-            --credit: #0a8f3c;
-            --debit: #d93025;
+            --card: #ffffff;
+            --text: #333;
+            --muted: #777;
+            --credit: #2e7d32;
+            --debit: #d32f2f;
         }
 
         body {
             margin: 0;
             background: var(--bg);
-            font-family: Arial;
+            font-family: "Segoe UI", Arial, sans-serif;
         }
 
+        /* ===== TOPBAR ===== */
         .topbar {
             background: var(--primary);
             color: white;
-            padding: 14px 20px;
+            padding: 14px 22px;
             display: flex;
             justify-content: space-between;
+            align-items: center;
         }
 
         .topbar a {
             color: white;
-            margin-left: 12px;
+            margin-left: 14px;
             text-decoration: none;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 30px auto;
-            padding: 0 16px;
-        }
-
-        .card {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-
-        th,
-        td {
-            padding: 12px;
-            border-bottom: 1px solid #eee;
-            text-align: left;
             font-size: 14px;
         }
 
-        th {
-            background: #f5f6fa;
+        /* ===== CONTAINER ===== */
+        .container {
+            max-width: 1000px;
+            margin: 35px auto;
+            padding: 0 16px;
         }
 
-        .credit {
+        /* ===== CARD ===== */
+        .card {
+            background: var(--card);
+            padding: 25px;
+            border-radius: 18px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        /* ===== TABLE ===== */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #eef1f7;
+            padding: 14px;
+            text-align: left;
+            font-size: 14px;
+            color: #555;
+        }
+
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #e3e6f0;
+            font-size: 14px;
+            color: var(--text);
+        }
+
+        tr:hover {
+            background: #f9faff;
+        }
+
+        /* ===== TYPE BADGE ===== */
+        .type {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+            display: inline-block;
+        }
+
+        .CREDIT {
+            background: var(--credit);
+        }
+
+        .DEBIT {
+            background: var(--debit);
+        }
+
+        .amount-credit {
             color: var(--credit);
             font-weight: bold;
         }
 
-        .debit {
+        .amount-debit {
             color: var(--debit);
             font-weight: bold;
         }
 
+        /* ===== EMPTY ===== */
         .empty {
             text-align: center;
-            padding: 20px;
-            color: #777;
+            padding: 25px;
+            color: var(--muted);
+            font-size: 15px;
         }
     </style>
 </head>
@@ -111,26 +149,28 @@
                         <th>Amount</th>
                     </tr>
                 </thead>
-
-                <tbody>
-                </tbody>
+                <tbody id="txnBody"></tbody>
             </table>
+
+            <div id="emptyMsg" class="empty" style="display:none;">
+                No transactions found.
+            </div>
         </div>
     </div>
 
     <script>
 
         const userId = localStorage.getItem("userId")
-        if ( !userId ) {
+        if (!userId) {
             location.href = "user-login.html"
         }
 
         async function showTransactions() {
 
             const accountNo = localStorage.getItem("accountNo")
-            const res = await fetch(`http://localhost:8080/api/transactions/account/${accountNo}`, 
+            const res = await fetch(`http://localhost:8080/api/transactions/account/${accountNo}`,
                 {
-                    method : "GET"
+                    method: "GET"
                 }
             )
 
@@ -138,7 +178,7 @@
 
             let tbody = document.querySelector("tbody")
             tbody.innerHTML = ""
-            
+
             data.forEach(element => {
                 let tr = document.createElement("tr")
                 tr.innerHTML = `

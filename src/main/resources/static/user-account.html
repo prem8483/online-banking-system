@@ -9,114 +9,221 @@
         :root {
             --primary: #0050ff;
             --bg: #f3f5fa;
-            --card: #fff;
+            --card: #ffffff;
+            --text: #333;
+            --muted: #777;
+            --success: #2e7d32;
+            --danger: #f44336;
         }
 
         body {
             margin: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
             background: var(--bg);
-            font-family: Arial;
         }
 
+        /* ===== TOPBAR ===== */
         .topbar {
             background: var(--primary);
-            padding: 14px 20px;
+            padding: 14px 22px;
             color: white;
             display: flex;
             justify-content: space-between;
+            align-items: center;
         }
 
         .topbar a {
             color: white;
-            margin-left: 12px;
+            margin-left: 14px;
             text-decoration: none;
+            font-size: 14px;
         }
 
+        /* ===== CONTAINER ===== */
         .container {
             max-width: 900px;
-            margin: 35px auto;
+            margin: 40px auto;
             padding: 0 16px;
         }
 
-        .card {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
+        /* ===== ACCOUNT CARD ===== */
+        .account-card {
+            background: var(--card);
+            padding: 30px;
+            border-radius: 18px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        .account-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 25px;
         }
 
+        .account-header h2 {
+            margin: 0;
+        }
+
+        .status {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .ACTIVE {
+            background: var(--success);
+        }
+
+        .INACTIVE {
+            background: var(--danger);
+        }
+
+        .balance {
+            font-size: 36px;
+            font-weight: bold;
+            color: var(--success);
+            margin: 20px 0;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .item label {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .item div {
+            font-size: 16px;
+            font-weight: 500;
+            margin-top: 4px;
+        }
+
+        /* ===== NO ACCOUNT ===== */
         .noacc {
+            background: var(--card);
+            padding: 30px;
+            border-radius: 18px;
             text-align: center;
-            color: red;
-            font-size: 18px;
-            padding: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        .noacc h2 {
+            color: var(--danger);
+            margin-bottom: 10px;
+        }
+
+        .noacc p {
+            color: #555;
+        }
+
+        @media (max-width: 600px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .account-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
         }
     </style>
-
 </head>
 
 <body>
 
-    <div class="topbar">
-        <div style="font-size:18px;font-weight:bold;">Online Bank</div>
-        <div>
-            <a href="user-dashboard.html">Dashboard</a>
-            <a href="user-account.html">Accounts</a>
-            <a href="user-nominee.html">Nominee</a>
-            <a href="user-transactions.html">Transactions</a>
-            <a href="user-transactions-send.html">Money Transfer</a>
-            <a href="user-profile.html">Profile</a>
-            <a href="#" onclick="logout()">Logout</a>
+<div class="topbar">
+    <div style="font-size:18px;font-weight:bold;">Online Bank</div>
+    <div>
+        <a href="user-dashboard.html">Dashboard</a>
+        <a href="user-account.html">Accounts</a>
+        <a href="user-nominee.html">Nominee</a>
+        <a href="user-transactions.html">Transactions</a>
+        <a href="user-transactions-send.html">Money Transfer</a>
+        <a href="user-profile.html">Profile</a>
+        <a href="#" onclick="logout()">Logout</a>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- NO ACCOUNT -->
+    <div id="noAccount" class="noacc" style="display:none;">
+        <h2>No Bank Account</h2>
+        <p>Please contact bank staff to create an account for you.</p>
+    </div>
+
+    <!-- ACCOUNT CARD -->
+    <div class="account-card" id="accCard" style="display:none;">
+        <div class="account-header">
+            <h2>My Account</h2>
+            <span id="accStatus" class="status"></span>
+        </div>
+
+        <div class="balance">
+            ₹ <span id="accBalance"></span>
+        </div>
+        <div style="color:#777;margin-bottom:25px;">Available Balance</div>
+
+        <div class="grid">
+            <div class="item">
+                <label>Account Number</label>
+                <div id="accNo"></div>
+            </div>
+
+            <div class="item">
+                <label>Account Type</label>
+                <div id="accType"></div>
+            </div>
         </div>
     </div>
 
-    <div class="container">
+</div>
 
-        <div id="noAccount" class="card noacc" style="display:none;">
-            You currently have no bank accounts.<br>
-            Please contact bank staff to create an account.
-        </div>
+<script>
+let userId = localStorage.getItem("userId");
+if (!userId) location.href = "user-login.html";
 
-        <div class="card" id="accCard" style="display:none;">
-            <h3>Account Details</h3>
-            <p><b>Account Number:</b> <span id="accNo"></span></p>
-            <p><b>Account Type:</b> <span id="accType"></span></p>
-            <p><b>Status:</b> <span id="accStatus"></span></p>
-            <p><b>Balance:</b> ₹ <span id="accBalance"></span></p>
-        </div>
+async function loadAccount() {
+    const res = await fetch(`http://localhost:8080/api/accounts/user/${userId}`);
+    const list = await res.json();
 
-    </div>
+    if (list.length === 0) {
+        document.getElementById("noAccount").style.display = "block";
+        return;
+    }
 
-    <script>
-        let userId = localStorage.getItem("userId");
-        if (!userId) location.href = "user-login.html";
+    const a = list[0];
+    document.getElementById("accCard").style.display = "block";
 
-        async function loadAccount() {
-            const res = await fetch(`http://localhost:8080/api/accounts/user/${userId}`);
-            const list = await res.json();
+    document.getElementById("accNo").innerText = a.accountNo;
+    document.getElementById("accType").innerText = a.accountType;
+    document.getElementById("accBalance").innerText = a.balance;
 
-            if (list.length === 0) {
-                document.getElementById("noAccount").style.display = "block";
-                return;
-            }
+    const statusEl = document.getElementById("accStatus");
+    if (a.status) {
+        statusEl.innerText = "ACTIVE";
+        statusEl.classList.add("ACTIVE");
+    } else {
+        statusEl.innerText = "INACTIVE";
+        statusEl.classList.add("INACTIVE");
+    }
+}
 
-            const a = list[0];
-            document.getElementById("accCard").style.display = "block";
-            document.getElementById("accNo").innerText = a.accountNo;
-            document.getElementById("accType").innerText = a.accountType;
-            document.getElementById("accStatus").innerText = a.status ? "Active" : "Inactive";
-            document.getElementById("accBalance").innerText = a.balance;
-        }
+loadAccount();
 
-        loadAccount();
-
-        function logout() {
-            localStorage.removeItem("userId");
-            location.href = "user-login.html";
-        }
-    </script>
+function logout() {
+    localStorage.removeItem("userId");
+    location.href = "user-login.html";
+}
+</script>
 
 </body>
-
 </html>

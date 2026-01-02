@@ -9,48 +9,134 @@
         :root {
             --primary: #0050ff;
             --bg: #f3f5fa;
-            --card: #fff;
+            --card: #ffffff;
+            --text: #333;
+            --muted: #777;
+            --success: #2e7d32;
+            --danger: #f44336;
         }
 
         body {
             margin: 0;
-            font-family: Arial;
+            font-family: "Segoe UI", Arial, sans-serif;
             background: var(--bg);
         }
 
+        /* ===== TOPBAR ===== */
         .topbar {
             background: var(--primary);
-            color: #fff;
-            padding: 14px 20px;
+            color: white;
+            padding: 14px 22px;
             display: flex;
             justify-content: space-between;
+            align-items: center;
         }
 
         .topbar a {
             color: white;
-            margin-left: 12px;
+            margin-left: 14px;
             text-decoration: none;
+            font-size: 14px;
         }
 
+        /* ===== CONTAINER ===== */
         .container {
-            max-width: 900px;
+            max-width: 1100px;
             margin: 35px auto;
             padding: 0 16px;
         }
 
+        /* ===== CARDS ===== */
         .card {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
+            background: var(--card);
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
             margin-bottom: 25px;
         }
 
-        .noacc {
-            color: red;
-            font-size: 18px;
-            text-align: center;
-            padding: 15px;
+        /* ===== WELCOME ===== */
+        .welcome {
+            background: linear-gradient(135deg, #0050ff, #2979ff);
+            color: white;
+        }
+
+        .welcome h2 {
+            margin: 0;
+        }
+
+        .balance {
+            font-size: 34px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        /* ===== GRID ===== */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .item label {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .item div {
+            font-size: 15px;
+            font-weight: 500;
+            margin-top: 4px;
+        }
+
+        /* ===== TABLE ===== */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+
+        th {
+            background: #eef1f7;
+            text-align: left;
+        }
+
+        .debit {
+            color: var(--danger);
+            font-weight: bold;
+        }
+
+        .credit {
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        .status {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .ACTIVE {
+            background: var(--success);
+        }
+
+        .BLOCKED {
+            background: var(--danger);
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -58,13 +144,13 @@
 <body>
 
     <div class="topbar">
-        <div style="font-size:18px;font-weight:bold;">Online Bank</div>
+        <div><b>Online Bank</b></div>
         <div>
             <a href="user-dashboard.html">Dashboard</a>
             <a href="user-account.html">Accounts</a>
             <a href="user-nominee.html">Nominee</a>
             <a href="user-transactions.html">Transactions</a>
-            <a href="user-transactions-send.html">Money Transfer</a>
+            <a href="user-transactions-send.html">Transfer</a>
             <a href="user-profile.html">Profile</a>
             <a href="#" onclick="logout()">Logout</a>
         </div>
@@ -72,16 +158,58 @@
 
     <div class="container">
 
-        <div class="card" id="accCard" style="display:none;">
-            <h2>Welcome!</h2>
-            <p>Your primary account:</p>
-            <p><b>Account No:</b> <span id="accNo"></span></p>
-            <p><b>Balance:</b> ₹ <span id="accBal"></span></p>
+        <!-- ===== WELCOME ===== -->
+        <div class="card welcome">
+            <h2>Welcome back 👋</h2>
+            <div class="balance">₹ <span id="balance"></span></div>
+            <div>Available Balance</div>
         </div>
 
-        <div class="card noacc" id="noAccount" style="display:none;">
-            ❌ No bank account linked to your profile.<br>
-            Please contact bank staff to create an account.
+        <!-- ===== ACCOUNT DETAILS ===== -->
+        <div class="card">
+            <h3>Account Details</h3>
+            <div class="grid">
+                <div class="item"><label>Account No</label>
+                    <div id="accNo"></div>
+                </div>
+                <div class="item"><label>Account Type</label>
+                    <div id="accType"></div>
+                </div>
+                <div class="item"><label>Status</label>
+                    <div><span id="accStatus" class="status"></span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== LAST TRANSACTIONS ===== -->
+        <div class="card">
+            <h3>Last 5 Transactions</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody id="txnTable"></tbody>
+            </table>
+        </div>
+
+        <!-- ===== BANKING INFO ===== -->
+        <div class="card">
+            <h3>Banking Information</h3>
+            <div class="grid">
+                <div class="item"><label>Email</label>
+                    <div id="email"></div>
+                </div>
+                <div class="item"><label>Phone</label>
+                    <div id="phone"></div>
+                </div>
+                <div class="item"><label>User ID</label>
+                    <div id="userId"></div>
+                </div>
+            </div>
         </div>
 
     </div>
@@ -91,17 +219,47 @@
         if (!userId) location.href = "user-login.html";
 
         async function loadDashboard() {
-            const res = await fetch(`http://localhost:8080/api/accounts/user/${userId}`);
-            const list = await res.json();
 
-            if (list.length === 0) {
-                document.getElementById("noAccount").style.display = "block";
-            } else {
-                const a = list[0];
-                document.getElementById("accCard").style.display = "block";
-                document.getElementById("accNo").innerText = a.accountNo;
-                document.getElementById("accBal").innerText = a.balance;
-            }
+            const userRes = await fetch(`http://localhost:8080/api/users/${userId}`);
+            const u = await userRes.json();
+
+            document.getElementById("email").innerText = u.email;
+            document.getElementById("phone").innerText = u.phone;
+            document.getElementById("userId").innerText = u.userId;
+
+            document.getElementById("accStatus").innerText = u.status ? "BLOCKED" : "ACTIVE";
+            document.getElementById("accStatus").classList.add(u.status ? "BLOCKED" : "ACTIVE");
+
+            // ACCOUNT
+            const accRes = await fetch(`http://localhost:8080/api/accounts/user/${userId}`);
+            const accList = await accRes.json();
+
+            if (accList.length === 0) return;
+
+            const acc = accList[0];
+            document.getElementById("balance").innerText = acc.balance;
+            document.getElementById("accNo").innerText = acc.accountNo;
+            document.getElementById("accType").innerText = acc.accountType;
+
+            // TRANSACTIONS (LAST 5)
+            const txnRes = await fetch(`http://localhost:8080/api/transactions/user/${acc.accountNo}`);
+            const txns = await txnRes.json();
+
+            const table = document.getElementById("txnTable");
+            table.innerHTML = "";
+
+            txns.slice(0, 5).forEach(t => {
+                const cls = t.txnType === "SEND" ? "debit" : "credit";
+                const sign = t.txnType === "SEND" ? "-" : "+";
+
+                table.innerHTML += `
+            <tr>
+                <td>${t.createdAt.replace("T", " ")}</td>
+                <td>${t.description}</td>
+                <td class="${cls}">${sign}₹ ${t.amount}</td>
+            </tr>
+        `;
+            });
         }
 
         loadDashboard();

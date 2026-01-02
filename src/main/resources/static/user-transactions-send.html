@@ -9,57 +9,111 @@
         :root {
             --primary: #0050ff;
             --bg: #f3f5fa;
-            --card: #fff;
+            --card: #ffffff;
+            --text: #333;
+            --muted: #777;
+            --danger: #d32f2f;
         }
 
         body {
-            font-family: Arial;
-            background: #f3f5fa;
             margin: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: var(--bg);
         }
 
-        .card {
-            width: 400px;
-            margin: 60px auto;
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        input,
-        select {
-            width: 100%;
-            padding: 12px;
-            margin-top: 10px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-        }
-
-        button {
-            margin-top: 18px;
-            padding: 12px;
-            width: 100%;
-            background: #0050ff;
-            color: white;
-            border: none;
-            font-size: 16px;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-
+        /* ===== TOPBAR ===== */
         .topbar {
             background: var(--primary);
             color: #fff;
-            padding: 14px 20px;
+            padding: 14px 22px;
             display: flex;
             justify-content: space-between;
+            align-items: center;
         }
 
         .topbar a {
             color: white;
-            margin-left: 12px;
+            margin-left: 14px;
             text-decoration: none;
+            font-size: 14px;
+        }
+
+        /* ===== CARD ===== */
+        .card {
+            width: 420px;
+            margin: 60px auto;
+            background: var(--card);
+            padding: 30px;
+            border-radius: 18px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .hint {
+            text-align: center;
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 13px;
+            color: var(--muted);
+            margin-top: 14px;
+            display: block;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-top: 6px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .amount {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        button {
+            margin-top: 22px;
+            padding: 14px;
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            font-size: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .warning {
+            font-size: 12px;
+            color: var(--danger);
+            text-align: center;
+            margin-top: 14px;
+        }
+
+        @media (max-width: 500px) {
+            .card {
+                width: 90%;
+            }
         }
     </style>
 </head>
@@ -81,28 +135,32 @@
 
     <div class="card">
         <h2>Send Money</h2>
+        <div class="hint">Transfer securely to another bank account</div>
 
         <label>Receiver Account Number</label>
-        <input type="text" id="accountNo">
+        <input type="text" id="accountNo" placeholder="Enter receiver account number">
 
         <label>Amount</label>
-        <input type="number" id="amount" />
+        <input type="number" id="amount" class="amount" placeholder="₹ 0.00">
 
-        <label>Pass Code</label>
-        <input type="password" id="code">
+        <label>Transaction Passcode</label>
+        <input type="password" id="code" placeholder="Enter passcode">
 
         <label>Reason (optional)</label>
-        <input type="text" id="reason">
+        <input type="text" id="reason" placeholder="e.g. Rent, Fees">
 
+        <button onclick="sendMoney()">Send Money</button>
 
-        <button onclick="sendMoney()">Send</button>
+        <div class="warning">
+            ⚠️ Please verify account number before sending money.
+        </div>
     </div>
 
     <script>
 
         let userId = localStorage.getItem("userId");
         if (!userId) location.href = "user-login.html";
-        
+
 
         // Send Money
         async function sendMoney() {

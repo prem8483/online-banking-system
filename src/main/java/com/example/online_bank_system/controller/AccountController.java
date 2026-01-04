@@ -39,7 +39,7 @@ public class AccountController {
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Account>> getAccountsByUser ( @PathVariable int userId ) {
-        List<Account> list = accountService.findByUserId( userId );
+        List<Account> list = accountService.getAccountsByUser( userId );
         return ResponseEntity.ok(list);
     }
 

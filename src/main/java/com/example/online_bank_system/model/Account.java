@@ -30,12 +30,22 @@ public class Account {
     
     double balance;
     boolean status;
-    LocalDateTime createdAt;
 
+    boolean deleted = false;
+    LocalDateTime createdAt;
+    
     public Account() {
         
     }
+    
+    public boolean isDeleted() {
+        return deleted;
+    }
 
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
  
     public User getUser() {
         return user;

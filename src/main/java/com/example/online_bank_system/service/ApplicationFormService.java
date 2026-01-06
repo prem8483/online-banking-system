@@ -89,6 +89,7 @@ public class ApplicationFormService {
         account.setStatus(true);
         account.setBalance(0);
         account.setCreatedAt(LocalDateTime.now());
+        account.setAccountType(form.getAccountType());
 
         Account savedAccount = accountRepository.save(account);
 

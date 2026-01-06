@@ -51,7 +51,7 @@ public class AdminController {
 
     @GetMapping("/accounts")
     public ResponseEntity<List<Account>> allAccounts() {
-        List<Account> a = adminService.getAllAccounts();
+        List<Account> a = adminService.getAllAccountsDeletedFalse();
         if (a == null) {
             return ResponseEntity.notFound().build();
         }

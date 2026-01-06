@@ -12,4 +12,9 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
 
     List<Account> findAccountByUserId( int user_id );
 
+    List<Account> findByUserId(int userId);
+
+    List<Account> findByUserIdAndDeletedFalse( int userId );
+
+    List<Account> findByDeletedFalse();
 }

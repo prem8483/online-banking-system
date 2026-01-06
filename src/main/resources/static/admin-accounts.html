@@ -110,7 +110,7 @@
 <script>
 async function loadAccounts() {
     try {
-        const res = await fetch("http://localhost:8080/api/accounts/allAccounts");
+        const res = await fetch("http://localhost:8080/api/admin/accounts");
         const data = await res.json();
 
         const table = document.getElementById("accountsTable");

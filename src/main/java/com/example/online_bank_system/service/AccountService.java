@@ -24,8 +24,8 @@ public class AccountService {
         return accountRepository.findByAccountNo(account_no);
     }
 
-    public List<Account> findByUserId ( int user_id ) {
-        return accountRepository.findAccountByUserId( user_id );
+    public List<Account> getAccountsByUser ( int userId ) {
+        return accountRepository.findByUserIdAndDeletedFalse( userId );
     }
 
     public List<Account> getAllAccounts ( ) {

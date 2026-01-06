@@ -29,12 +29,8 @@ public class UserService {
     }
 
     public User loginUser(String email, String password) {
-        User u = userRepository.findByEmail(email);
-        if (u == null) {
-            return null;
-        }
-
-        if (!u.getPassword().equals(password)) {
+        User u = userRepository.findByEmailAndPassword(email, password);
+        if (u == null || u.isDeleted()) {
             return null;
         }
 

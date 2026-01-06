@@ -93,6 +93,7 @@
     <script>
 
         async function login() {
+
             let req = {
                 email: document.getElementById("email").value,
                 password: document.getElementById("password").value
@@ -115,8 +116,15 @@
                 
                 const res2 = await fetch(`http://localhost:8080/api/accounts/user/${uid}`)
                 let data2 = await res2.json();
+
+                if( data2.length === 0 ) {
+                    alert("Account not found")
+                    return
+                }
+                
                 let accountNo = data2[0].accountNo
                 localStorage.setItem("accountNo", accountNo)
+
 
 
                 alert("Login Successful");

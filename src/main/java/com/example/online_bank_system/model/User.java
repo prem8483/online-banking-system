@@ -13,7 +13,7 @@ import jakarta.persistence.Table;
 @Table(name = "Users")
 public class User {
 
-    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     int userId;
 
@@ -38,25 +38,31 @@ public class User {
     String pincode;
 
     boolean status;
-
+    boolean deleted = false;
+    
     LocalDateTime createdAt;
     String password;
+    
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
 
     public String getPassword() {
         return password;
     }
 
-
     public void setPassword(String password) {
         this.password = password;
     }
 
-
-    public User () {
+    public User() {
 
     }
 
-    
     public boolean isStatus() {
         return status;
     }
@@ -64,7 +70,6 @@ public class User {
     public void setStatus(boolean status) {
         this.status = status;
     }
-
 
     public int getUserId() {
         return userId;
@@ -106,7 +111,6 @@ public class User {
         this.dob = dob;
     }
 
-
     public String getNationality() {
         return nationality;
     }
@@ -123,7 +127,6 @@ public class User {
         this.occupation = occupation;
     }
 
-
     public String getMaritalStatus() {
         return maritalStatus;
     }
@@ -132,27 +135,21 @@ public class User {
         this.maritalStatus = maritalStatus;
     }
 
-  
-
     public String getAnnualIncome() {
         return annualIncome;
     }
-
 
     public void setAnnualIncome(String annualIncome) {
         this.annualIncome = annualIncome;
     }
 
-
     public String getAadharNumber() {
         return aadharNumber;
     }
 
-
     public void setAadharNumber(String aadharNumber) {
         this.aadharNumber = aadharNumber;
     }
-
 
     public String getPanNumber() {
         return panNumber;
@@ -205,7 +202,6 @@ public class User {
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
-
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;

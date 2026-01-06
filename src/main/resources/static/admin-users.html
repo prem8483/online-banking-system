@@ -153,7 +153,7 @@
             <button class="btn btn-view" onclick="viewUser(${u.userId})">View</button>
         `;
 
-                if (u.blocked) {
+                if (u.status) {
                     actionBtns += `
                 <button class="btn btn-unblock" onclick="unblock(${u.userId})">Unblock</button>
             `;

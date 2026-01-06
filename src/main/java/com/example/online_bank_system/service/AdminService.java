@@ -37,12 +37,12 @@ public class AdminService {
 
     // ALL USERS
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        return userRepository.findByDeletedFalse();
     }
 
     // ALL ACCOUNTS
-    public List<Account> getAllAccounts() {
-        return accountRepository.findAll();
+    public List<Account> getAllAccountsDeletedFalse() {
+        return accountRepository.findByDeletedFalse();
     }
 
     // ALL TRANSACTIONS
@@ -72,7 +72,13 @@ public class AdminService {
     public boolean deleteUser(int userId) {
         User u = userRepository.findById(userId).orElse(null);
         if (u == null) return false;
-        userRepository.delete(u);
+        u.setDeleted(true);
+        userRepository.save(u);
+        List<Account> accounts = accountRepository.findByUserId(userId);
+        for( Account acc : accounts ) {
+            acc.setDeleted(true);
+            accountRepository.save(acc);
+        }
         return true;
     }
 

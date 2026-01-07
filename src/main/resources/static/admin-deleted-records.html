@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin – Deleted Users & Accounts</title>
+
+    <style>
+        :root {
+            --primary: #0050ff;
+            --bg: #f3f5fa;
+            --card: #ffffff;
+            --border: #e3e6f0;
+            --text: #333;
+            --danger: #f44336;
+            --muted: #777;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: var(--bg);
+        }
+
+        /* ===== TOPBAR ===== */
+        .topbar {
+            background: var(--primary);
+            color: white;
+            padding: 16px 24px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* ===== CONTAINER ===== */
+        .container {
+            max-width: 1300px;
+            margin: 40px auto;
+            background: var(--card);
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: var(--muted);
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        /* ===== TABLE ===== */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #eef1f7;
+        }
+
+        th, td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background: #f9faff;
+        }
+
+        /* ===== STATUS ===== */
+        .status {
+            padding: 5px 14px;
+            border-radius: 14px;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+            display: inline-block;
+        }
+
+        .DELETED {
+            background: var(--danger);
+        }
+
+        /* ===== EMPTY STATE ===== */
+        .empty {
+            text-align: center;
+            padding: 30px;
+            color: var(--muted);
+            font-size: 15px;
+        }
+
+        @media (max-width: 900px) {
+            table {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="topbar">Admin – Deleted Records</div>
+
+<div class="container">
+    <h2>Deleted Users & Accounts</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Account No</th>
+                <th>Name</th>
+                <th>Mobile No</th>
+                <th>Email</th>
+                <th>Account Type</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+
+        <tbody id="deletedTable">
+            
+        </tbody>
+    </table>
+
+    <script>
+
+        async function showDeletedRecords( ) {
+            let res = await fetch("http://localhost:8080/api/admin/deletedRecords", {
+                method : "GET"
+            }
+            )
+
+            let data = await res.json();
+
+            let tbody = document.querySelector("tbody")
+
+            tbody.innerHTML = ""
+
+            data.forEach(a => {
+                let tr = document.createElement("tr")
+
+                tr.innerHTML = `
+                    <td>${a.user.userId}</td>
+                    <td>${a.accountNo}</td>
+                    <td>${a.user.name}</td>
+                    <td>${a.user.phone}</td>
+                    <td>${a.user.email}</td>
+                    <td>${a.accountType}</td>
+                    <td><span class="status DELETED">DELETED</span></td>
+                `;
+                
+                tbody.appendChild(tr);
+            });
+        }
+
+        window.onload = showDeletedRecords;
+    </script>
+</div>
+
+</body>
+</html>

@@ -118,4 +118,10 @@ public class AdminService {
     public User getUserById ( int userId ) {
         return userRepository.findById(userId).orElse(null);
     }
+
+
+    //Get Deleted Records - Accounts nd User
+    public List<Account> getAllDeletedAccountsAndUser( ) {
+        return accountRepository.findByDeletedTrue();
+    }
 }

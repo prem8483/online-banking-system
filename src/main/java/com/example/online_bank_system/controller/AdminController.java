@@ -170,4 +170,14 @@ public class AdminController {
 
         return ResponseEntity.ok(u);
     }
+
+    @GetMapping("/deletedRecords")
+    public ResponseEntity<List<Account>> showDeletedRecords ( ) {
+        List<Account> data = adminService.getAllDeletedAccountsAndUser();
+        if (data == null ) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(data);
+    }
 }

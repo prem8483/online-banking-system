@@ -8,7 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Account {
@@ -18,8 +18,8 @@ public class Account {
     @Column(name = "account_no")
     private int accountNo;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", insertable =  false, updatable = false)
+    @OneToOne
+    @JoinColumn(name = "user_id", insertable =  false, updatable = false, unique = true)
     private User user;
 
     @Column(name = "user_id")
